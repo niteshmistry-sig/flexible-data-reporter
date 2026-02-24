@@ -1,0 +1,481 @@
+/* ===================================================================
+   Flexible Data Reporter — MyGeotab Add-In Styles
+   Consistent with MyGeotab look & feel (Geotab blue, neutral grays)
+   =================================================================== */
+
+:root {
+  --gt-blue: #005f9e;
+  --gt-blue-dark: #004a7c;
+  --gt-blue-light: #e8f4fc;
+  --gt-green: #28a745;
+  --gt-red: #dc3545;
+  --gt-orange: #fd7e14;
+  --gt-gray-50: #f8f9fa;
+  --gt-gray-100: #f1f3f5;
+  --gt-gray-200: #e9ecef;
+  --gt-gray-300: #dee2e6;
+  --gt-gray-400: #ced4da;
+  --gt-gray-600: #868e96;
+  --gt-gray-700: #495057;
+  --gt-gray-800: #343a40;
+  --gt-gray-900: #212529;
+  --gt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --gt-radius: 4px;
+  --gt-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Reset within our add-in container */
+#flexDataReporter {
+  font-family: var(--gt-font);
+  font-size: 14px;
+  color: var(--gt-gray-800);
+  line-height: 1.5;
+  padding: 16px 24px;
+  max-width: 1400px;
+}
+
+#flexDataReporter *,
+#flexDataReporter *::before,
+#flexDataReporter *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Panel Sections ---------- */
+
+.fdr-panel {
+  background: #fff;
+  border: 1px solid var(--gt-gray-200);
+  border-radius: var(--gt-radius);
+  box-shadow: var(--gt-shadow);
+  margin-bottom: 16px;
+  padding: 16px 20px;
+}
+
+.fdr-panel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gt-gray-900);
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gt-blue);
+}
+
+/* ---------- Configure Panel ---------- */
+
+.fdr-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 14px;
+}
+
+.fdr-categories label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: var(--gt-radius);
+  transition: background 0.15s;
+}
+
+.fdr-categories label:hover {
+  background: var(--gt-blue-light);
+}
+
+.fdr-column-pickers {
+  margin-bottom: 14px;
+}
+
+.fdr-column-group {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: var(--gt-gray-50);
+  border: 1px solid var(--gt-gray-200);
+  border-radius: var(--gt-radius);
+}
+
+.fdr-column-group-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--gt-blue);
+  margin-bottom: 6px;
+}
+
+.fdr-column-group .fdr-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+
+.fdr-column-group .fdr-columns label {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+/* Filters row */
+.fdr-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 14px;
+}
+
+.fdr-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fdr-filter-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gt-gray-700);
+}
+
+.fdr-filter-group input,
+.fdr-filter-group select {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+  background: #fff;
+  color: var(--gt-gray-800);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.fdr-filter-group input:focus,
+.fdr-filter-group select:focus {
+  border-color: var(--gt-blue);
+  box-shadow: 0 0 0 2px rgba(0, 95, 158, 0.15);
+}
+
+/* Diagnostic picker (only for StatusData) */
+.fdr-diagnostic-picker {
+  display: none;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  background: var(--gt-gray-50);
+  border: 1px solid var(--gt-gray-200);
+  border-radius: var(--gt-radius);
+}
+
+.fdr-diagnostic-picker.visible {
+  display: block;
+}
+
+.fdr-diagnostic-picker label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gt-gray-700);
+}
+
+.fdr-diagnostic-picker select {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+  min-width: 300px;
+  margin-top: 3px;
+}
+
+/* Buttons */
+.fdr-btn {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border: none;
+  border-radius: var(--gt-radius);
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.fdr-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fdr-btn-primary {
+  background: var(--gt-blue);
+  color: #fff;
+}
+
+.fdr-btn-primary:hover:not(:disabled) {
+  background: var(--gt-blue-dark);
+}
+
+.fdr-btn-secondary {
+  background: var(--gt-gray-200);
+  color: var(--gt-gray-800);
+}
+
+.fdr-btn-secondary:hover:not(:disabled) {
+  background: var(--gt-gray-300);
+}
+
+.fdr-btn-success {
+  background: var(--gt-green);
+  color: #fff;
+}
+
+.fdr-btn-success:hover:not(:disabled) {
+  background: #218838;
+}
+
+.fdr-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Status / loading */
+.fdr-status {
+  font-size: 13px;
+  color: var(--gt-gray-600);
+  margin-left: 12px;
+}
+
+.fdr-status.error {
+  color: var(--gt-red);
+  font-weight: 600;
+}
+
+.fdr-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--gt-gray-300);
+  border-top-color: var(--gt-blue);
+  border-radius: 50%;
+  animation: fdr-spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes fdr-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Results Panel ---------- */
+
+.fdr-results {
+  display: none;
+}
+
+.fdr-results.visible {
+  display: block;
+}
+
+/* Tabs */
+.fdr-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--gt-gray-200);
+  margin-bottom: 12px;
+}
+
+.fdr-tab {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  color: var(--gt-gray-600);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.fdr-tab:hover {
+  color: var(--gt-gray-800);
+}
+
+.fdr-tab.active {
+  color: var(--gt-blue);
+  border-bottom-color: var(--gt-blue);
+}
+
+.fdr-tab-count {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--gt-gray-600);
+  margin-left: 4px;
+}
+
+/* Table toolbar */
+.fdr-table-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.fdr-search {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+  width: 220px;
+  outline: none;
+}
+
+.fdr-search:focus {
+  border-color: var(--gt-blue);
+  box-shadow: 0 0 0 2px rgba(0, 95, 158, 0.15);
+}
+
+/* Data table */
+.fdr-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 10px;
+}
+
+.fdr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.fdr-table thead th {
+  background: var(--gt-gray-100);
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--gt-gray-300);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.fdr-table thead th:hover {
+  background: var(--gt-gray-200);
+}
+
+.fdr-table thead th .sort-arrow {
+  font-size: 10px;
+  margin-left: 4px;
+  color: var(--gt-gray-400);
+}
+
+.fdr-table thead th .sort-arrow.asc::after { content: '\25B2'; color: var(--gt-blue); }
+.fdr-table thead th .sort-arrow.desc::after { content: '\25BC'; color: var(--gt-blue); }
+
+.fdr-table tbody td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--gt-gray-200);
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fdr-table tbody tr:hover {
+  background: var(--gt-blue-light);
+}
+
+/* Pagination */
+.fdr-pagination {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--gt-gray-700);
+}
+
+.fdr-pagination button {
+  font-family: var(--gt-font);
+  font-size: 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+  background: #fff;
+  cursor: pointer;
+}
+
+.fdr-pagination button:hover:not(:disabled) {
+  background: var(--gt-gray-100);
+}
+
+.fdr-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* No data */
+.fdr-no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--gt-gray-600);
+  font-size: 14px;
+}
+
+/* ---------- Chart Panel ---------- */
+
+.fdr-chart-panel {
+  display: none;
+}
+
+.fdr-chart-panel.visible {
+  display: block;
+}
+
+.fdr-chart-controls {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.fdr-chart-controls label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gt-gray-700);
+}
+
+.fdr-chart-controls select {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+}
+
+.fdr-chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 400px;
+  background: var(--gt-gray-50);
+  border: 1px solid var(--gt-gray-200);
+  border-radius: var(--gt-radius);
+}
+
+.fdr-chart-container canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Utility ---------- */
+
+.fdr-hidden {
+  display: none !important;
+}
+
+.fdr-mb-8 { margin-bottom: 8px; }
+.fdr-mb-12 { margin-bottom: 12px; }
