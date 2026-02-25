@@ -4,38 +4,85 @@
   <meta charset="UTF-8">
   <title>Data Reporter</title>
   <style>/* ===================================================================
-   Flexible Data Reporter — MyGeotab Add-In Styles
-   Consistent with MyGeotab look & feel (Geotab blue, neutral grays)
+   Flexible Data Reporter — Styled with Geotab Zenith Design Tokens
+   Ref: @geotab/zenith v3.5.0 — :root custom properties
    =================================================================== */
 
+/* ---- Zenith Font (Google Fonts CDN fallback since we can't bundle woff) ---- */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400&display=swap');
+
+/* ---- Zenith Design Tokens ---- */
 :root {
-  --gt-blue: #005f9e;
-  --gt-blue-dark: #004a7c;
-  --gt-blue-light: #e8f4fc;
-  --gt-green: #28a745;
-  --gt-red: #dc3545;
-  --gt-orange: #fd7e14;
-  --gt-gray-50: #f8f9fa;
-  --gt-gray-100: #f1f3f5;
-  --gt-gray-200: #e9ecef;
-  --gt-gray-300: #dee2e6;
-  --gt-gray-400: #ced4da;
-  --gt-gray-600: #868e96;
-  --gt-gray-700: #495057;
-  --gt-gray-800: #343a40;
-  --gt-gray-900: #212529;
-  --gt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --gt-radius: 4px;
-  --gt-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  /* Text */
+  --text-primary: #1F2833;
+  --text-secondary: #4E677E;
+  --text-placeholder: #8DA4B9;
+  --text-hyperlink: #005AA8;
+  --text-error-message: #C51A11;
+  --text-button-disabled: #C0CCD8;
+  --text-reverse-primary: #FFFFFF;
+
+  /* Backgrounds */
+  --backgrounds-main: #FFFFFF;
+  --backgrounds-content-0: #F9FAFB;
+  --backgrounds-content-1: #F2F5F7;
+  --backgrounds-content-2: #D9E1E8;
+  --backgrounds-hover: #E6EBEF;
+  --backgrounds-field-disabled: #E6EBEF;
+  --backgrounds-overlay: rgba(31, 40, 51, 0.4);
+  --backgrounds-primary-brand: #25477B;
+
+  /* Borders */
+  --borders-general: #C0CCD8;
+  --borders-secondary: #748FAA;
+  --borders-form-field--hover: #748FAA;
+  --borders-form-field--active: #0078D3;
+  --borders-form-field--error: #C51A11;
+
+  /* Actions */
+  --action-primary--default: #0078D3;
+  --action-primary--hover: #005AA8;
+  --action-primary--active: #004080;
+  --action-secondary--default: #4E677E;
+  --action-secondary--hover: #3E5265;
+  --action-secondary--active: #2F3D4C;
+  --action-destructive--default: #C51A11;
+  --action-tertiary--hover: #E6EBEF;
+
+  /* Accents */
+  --accents-warning--main: #FEF7ED;
+  --accents-warning--detail: #59480D;
+  --accents-error--main: #FFECEB;
+  --accents-error--detail: #A01F0E;
+  --accents-success--main: #EDFEF2;
+  --accents-success--detail: #2B6436;
+  --accents-general--main: #EBF6FF;
+  --accents-general--detail: #25477B;
+
+  /* Data / Chart categorical palette */
+  --data--categorical-light-blue: #3CCDE5;
+  --data--categorical-blue: #428AFF;
+  --data--categorical-purple: #8256E5;
+  --data--categorical-green: #06C989;
+  --data--categorical-orange: #F98C41;
+  --data--categorical-yellow: #F5BD60;
+  --data--categorical-red: #E56A6A;
+  --data--categorical-grey: #8A94A2;
+
+  /* Fonts */
+  --main-font: Roboto, "Segoe UI", Segoe, "Helvetica Neue", Helvetica, sans-serif;
+  --main-font-data: "Roboto Mono", "Segoe UI", Segoe, "Helvetica Neue", Helvetica, sans-serif;
 }
 
-/* Reset within our add-in container */
+/* ---- Reset within add-in container ---- */
 #flexDataReporter {
-  font-family: var(--gt-font);
+  font-family: var(--main-font);
   font-size: 14px;
-  color: var(--gt-gray-800);
-  line-height: 1.5;
-  padding: 16px 24px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 20px;
+  letter-spacing: 0.16px;
+  padding: 24px 32px;
   max-width: 1400px;
 }
 
@@ -45,232 +92,308 @@
   box-sizing: border-box;
 }
 
-/* ---------- Panel Sections ---------- */
+/* ---- Zenith heading-04 / heading-s-500 ---- */
+.fdr-panel-title {
+  font-family: var(--main-font);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--borders-general);
+}
+
+/* ============ Panels (Zenith card style) ============ */
 
 .fdr-panel {
-  background: #fff;
-  border: 1px solid var(--gt-gray-200);
-  border-radius: var(--gt-radius);
-  box-shadow: var(--gt-shadow);
-  margin-bottom: 16px;
-  padding: 16px 20px;
+  background: var(--backgrounds-main);
+  border: 1px solid var(--borders-general);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(31, 40, 51, 0.08);
+  margin-bottom: 20px;
+  padding: 24px;
 }
 
-.fdr-panel-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--gt-gray-900);
-  margin: 0 0 12px 0;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--gt-blue);
+/* ============ Configure Panel ============ */
+
+/* Section sub-label — Zenith heading-05 / heading-xs-500 */
+.fdr-section-label {
+  font-family: var(--main-font);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
 }
 
-/* ---------- Configure Panel ---------- */
-
+/* Category checkboxes — chip-style toggles */
 .fdr-categories {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 16px;
-  margin-bottom: 14px;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .fdr-categories label {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   cursor: pointer;
-  font-size: 13px;
-  padding: 4px 8px;
-  border-radius: var(--gt-radius);
-  transition: background 0.15s;
+  font-family: var(--main-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border: 1px solid var(--borders-general);
+  border-radius: 20px;
+  background: var(--backgrounds-main);
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
 }
 
 .fdr-categories label:hover {
-  background: var(--gt-blue-light);
+  background: var(--accents-general--main);
+  border-color: var(--action-primary--default);
 }
 
+.fdr-categories label:has(input:checked) {
+  background: var(--accents-general--main);
+  border-color: var(--action-primary--default);
+  color: var(--action-primary--default);
+  font-weight: 500;
+}
+
+.fdr-categories input[type="checkbox"] {
+  accent-color: var(--action-primary--default);
+  width: 16px;
+  height: 16px;
+}
+
+/* Column pickers */
 .fdr-column-pickers {
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 }
 
 .fdr-column-group {
-  margin-bottom: 10px;
-  padding: 10px 12px;
-  background: var(--gt-gray-50);
-  border: 1px solid var(--gt-gray-200);
-  border-radius: var(--gt-radius);
+  margin-bottom: 12px;
+  padding: 16px;
+  background: var(--backgrounds-content-0);
+  border: 1px solid var(--borders-general);
+  border-radius: 8px;
 }
 
 .fdr-column-group-title {
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--gt-blue);
-  margin-bottom: 6px;
+  font-family: var(--main-font);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accents-general--detail);
+  margin-bottom: 10px;
 }
 
 .fdr-column-group .fdr-columns {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 14px;
+  gap: 4px 20px;
 }
 
 .fdr-column-group .fdr-columns label {
+  font-family: var(--main-font);
   font-size: 12px;
-  display: flex;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.32px;
+  color: var(--text-primary);
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   cursor: pointer;
+  padding: 4px 0;
+}
+
+.fdr-column-group .fdr-columns input[type="checkbox"] {
+  accent-color: var(--action-primary--default);
+  width: 14px;
+  height: 14px;
 }
 
 /* Filters row */
 .fdr-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
   align-items: flex-end;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 }
 
 .fdr-filter-group {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
-.fdr-filter-group label {
+/* Zenith label-01 / body-label-400 */
+.fdr-filter-group label,
+.fdr-diagnostic-picker label,
+.fdr-chart-controls label {
+  font-family: var(--main-font);
   font-size: 12px;
-  font-weight: 600;
-  color: var(--gt-gray-700);
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.32px;
+  color: var(--text-secondary);
 }
 
+/* Zenith form field inputs */
 .fdr-filter-group input,
-.fdr-filter-group select {
-  font-family: var(--gt-font);
-  font-size: 13px;
-  padding: 6px 10px;
-  border: 1px solid var(--gt-gray-300);
-  border-radius: var(--gt-radius);
-  background: #fff;
-  color: var(--gt-gray-800);
+.fdr-filter-group select,
+.fdr-diagnostic-picker select,
+.fdr-chart-controls select,
+.fdr-search {
+  font-family: var(--main-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 8px 12px;
+  border: 1px solid var(--borders-general);
+  border-radius: 4px;
+  background: var(--backgrounds-main);
+  color: var(--text-primary);
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.fdr-filter-group input:hover,
+.fdr-filter-group select:hover,
+.fdr-search:hover {
+  border-color: var(--borders-form-field--hover);
 }
 
 .fdr-filter-group input:focus,
-.fdr-filter-group select:focus {
-  border-color: var(--gt-blue);
-  box-shadow: 0 0 0 2px rgba(0, 95, 158, 0.15);
+.fdr-filter-group select:focus,
+.fdr-diagnostic-picker select:focus,
+.fdr-search:focus {
+  border-color: var(--borders-form-field--active);
+  box-shadow: 0 0 0 2px rgba(0, 120, 211, 0.2);
 }
 
-/* Diagnostic picker (only for StatusData) */
+/* Diagnostic picker */
 .fdr-diagnostic-picker {
   display: none;
-  margin-bottom: 14px;
-  padding: 10px 12px;
-  background: var(--gt-gray-50);
-  border: 1px solid var(--gt-gray-200);
-  border-radius: var(--gt-radius);
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--backgrounds-content-0);
+  border: 1px solid var(--borders-general);
+  border-radius: 8px;
 }
 
 .fdr-diagnostic-picker.visible {
   display: block;
 }
 
-.fdr-diagnostic-picker label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--gt-gray-700);
-}
-
 .fdr-diagnostic-picker select {
-  font-family: var(--gt-font);
-  font-size: 13px;
-  padding: 6px 10px;
-  border: 1px solid var(--gt-gray-300);
-  border-radius: var(--gt-radius);
-  min-width: 300px;
-  margin-top: 3px;
+  min-width: 320px;
+  margin-top: 4px;
 }
 
-/* Buttons */
+/* ============ Buttons (Zenith-aligned) ============ */
+
 .fdr-btn {
-  font-family: var(--gt-font);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 8px 20px;
+  font-family: var(--main-font);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  padding: 8px 24px;
   border: none;
-  border-radius: var(--gt-radius);
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
+  transition: background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .fdr-btn:disabled {
-  opacity: 0.5;
+  background: var(--backgrounds-field-disabled);
+  color: var(--text-button-disabled);
   cursor: not-allowed;
 }
 
+/* Primary — Zenith action-primary */
 .fdr-btn-primary {
-  background: var(--gt-blue);
-  color: #fff;
+  background: var(--action-primary--default);
+  color: var(--text-reverse-primary);
 }
 
 .fdr-btn-primary:hover:not(:disabled) {
-  background: var(--gt-blue-dark);
+  background: var(--action-primary--hover);
 }
 
+.fdr-btn-primary:active:not(:disabled) {
+  background: var(--action-primary--active);
+}
+
+/* Secondary — Zenith action-secondary */
 .fdr-btn-secondary {
-  background: var(--gt-gray-200);
-  color: var(--gt-gray-800);
+  background: transparent;
+  color: var(--action-secondary--default);
+  border: 1px solid var(--borders-general);
 }
 
 .fdr-btn-secondary:hover:not(:disabled) {
-  background: var(--gt-gray-300);
+  background: var(--action-tertiary--hover);
+  color: var(--action-secondary--hover);
 }
 
+/* Success — uses Zenith success accent */
 .fdr-btn-success {
-  background: var(--gt-green);
-  color: #fff;
+  background: var(--accents-success--detail);
+  color: var(--text-reverse-primary);
 }
 
 .fdr-btn-success:hover:not(:disabled) {
-  background: #218838;
+  background: #236E32;
 }
 
 .fdr-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 }
 
-/* Status / loading */
+/* ============ Status / Loading ============ */
+
 .fdr-status {
-  font-size: 13px;
-  color: var(--gt-gray-600);
+  font-family: var(--main-font);
+  font-size: 14px;
+  color: var(--text-secondary);
   margin-left: 12px;
 }
 
 .fdr-status.error {
-  color: var(--gt-red);
-  font-weight: 600;
+  color: var(--text-error-message);
+  font-weight: 500;
 }
 
 .fdr-spinner {
   display: inline-block;
   width: 16px;
   height: 16px;
-  border: 2px solid var(--gt-gray-300);
-  border-top-color: var(--gt-blue);
+  border: 2px solid var(--borders-general);
+  border-top-color: var(--action-primary--default);
   border-radius: 50%;
   animation: fdr-spin 0.6s linear infinite;
   vertical-align: middle;
-  margin-right: 6px;
+  margin-right: 8px;
 }
 
 @keyframes fdr-spin {
   to { transform: rotate(360deg); }
 }
 
-/* ---------- Results Panel ---------- */
+/* ============ Results Panel ============ */
 
 .fdr-results {
   display: none;
@@ -280,86 +403,86 @@
   display: block;
 }
 
-/* Tabs */
+/* Tabs — Zenith tab-bar style */
 .fdr-tabs {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid var(--gt-gray-200);
-  margin-bottom: 12px;
+  border-bottom: 1px solid var(--borders-general);
+  margin-bottom: 16px;
 }
 
 .fdr-tab {
-  font-family: var(--gt-font);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 8px 16px;
+  font-family: var(--main-font);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  padding: 10px 20px;
   border: none;
   background: none;
-  color: var(--gt-gray-600);
+  color: var(--text-secondary);
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
+  margin-bottom: -1px;
   transition: color 0.15s, border-color 0.15s;
 }
 
 .fdr-tab:hover {
-  color: var(--gt-gray-800);
+  color: var(--text-primary);
+  background: var(--action-tertiary--hover);
 }
 
 .fdr-tab.active {
-  color: var(--gt-blue);
-  border-bottom-color: var(--gt-blue);
+  color: var(--action-primary--default);
+  border-bottom-color: var(--action-primary--default);
 }
 
 .fdr-tab-count {
   font-weight: 400;
-  font-size: 11px;
-  color: var(--gt-gray-600);
-  margin-left: 4px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-left: 6px;
 }
 
 /* Table toolbar */
 .fdr-table-toolbar {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
 .fdr-search {
-  font-family: var(--gt-font);
-  font-size: 13px;
-  padding: 6px 10px;
-  border: 1px solid var(--gt-gray-300);
-  border-radius: var(--gt-radius);
-  width: 220px;
-  outline: none;
+  width: 240px;
 }
 
-.fdr-search:focus {
-  border-color: var(--gt-blue);
-  box-shadow: 0 0 0 2px rgba(0, 95, 158, 0.15);
-}
+/* ============ Data Table (Zenith table style) ============ */
 
-/* Data table */
 .fdr-table-wrap {
   overflow-x: auto;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--borders-general);
+  border-radius: 8px;
 }
 
 .fdr-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-family: var(--main-font);
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .fdr-table thead th {
-  background: var(--gt-gray-100);
-  font-weight: 600;
+  background: var(--backgrounds-content-1);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.32px;
   text-align: left;
-  padding: 8px 10px;
-  border-bottom: 2px solid var(--gt-gray-300);
+  padding: 10px 16px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--borders-general);
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
@@ -367,53 +490,77 @@
 }
 
 .fdr-table thead th:hover {
-  background: var(--gt-gray-200);
+  background: var(--backgrounds-hover);
 }
 
 .fdr-table thead th .sort-arrow {
   font-size: 10px;
   margin-left: 4px;
-  color: var(--gt-gray-400);
+  color: var(--text-placeholder);
 }
 
-.fdr-table thead th .sort-arrow.asc::after { content: '\25B2'; color: var(--gt-blue); }
-.fdr-table thead th .sort-arrow.desc::after { content: '\25BC'; color: var(--gt-blue); }
+.fdr-table thead th .sort-arrow.asc::after {
+  content: '\25B2';
+  color: var(--action-primary--default);
+}
+
+.fdr-table thead th .sort-arrow.desc::after {
+  content: '\25BC';
+  color: var(--action-primary--default);
+}
 
 .fdr-table tbody td {
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--gt-gray-200);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--backgrounds-content-1);
   white-space: nowrap;
   max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text-primary);
+  font-family: var(--main-font-data);
+  font-size: 13px;
 }
 
 .fdr-table tbody tr:hover {
-  background: var(--gt-blue-light);
+  background: var(--accents-general--main);
 }
 
-/* Pagination */
+.fdr-table tbody tr:nth-child(even) {
+  background: var(--backgrounds-content-0);
+}
+
+.fdr-table tbody tr:nth-child(even):hover {
+  background: var(--accents-general--main);
+}
+
+/* ============ Pagination ============ */
+
 .fdr-pagination {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
-  font-size: 13px;
-  color: var(--gt-gray-700);
+  font-family: var(--main-font);
+  font-size: 14px;
+  color: var(--text-secondary);
+  padding: 8px 0;
 }
 
 .fdr-pagination button {
-  font-family: var(--gt-font);
-  font-size: 12px;
-  padding: 4px 12px;
-  border: 1px solid var(--gt-gray-300);
-  border-radius: var(--gt-radius);
-  background: #fff;
+  font-family: var(--main-font);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border: 1px solid var(--borders-general);
+  border-radius: 4px;
+  background: var(--backgrounds-main);
+  color: var(--action-secondary--default);
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 .fdr-pagination button:hover:not(:disabled) {
-  background: var(--gt-gray-100);
+  background: var(--action-tertiary--hover);
 }
 
 .fdr-pagination button:disabled {
@@ -421,15 +568,16 @@
   cursor: not-allowed;
 }
 
-/* No data */
+/* No data — Zenith empty-state style */
 .fdr-no-data {
   text-align: center;
-  padding: 40px 20px;
-  color: var(--gt-gray-600);
+  padding: 48px 24px;
+  color: var(--text-secondary);
   font-size: 14px;
+  font-weight: 400;
 }
 
-/* ---------- Chart Panel ---------- */
+/* ============ Chart Panel ============ */
 
 .fdr-chart-panel {
   display: none;
@@ -441,24 +589,10 @@
 
 .fdr-chart-controls {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   align-items: flex-end;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
-}
-
-.fdr-chart-controls label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--gt-gray-700);
-}
-
-.fdr-chart-controls select {
-  font-family: var(--gt-font);
-  font-size: 13px;
-  padding: 6px 10px;
-  border: 1px solid var(--gt-gray-300);
-  border-radius: var(--gt-radius);
 }
 
 .fdr-chart-container {
@@ -466,9 +600,9 @@
   width: 100%;
   max-width: 900px;
   height: 400px;
-  background: var(--gt-gray-50);
-  border: 1px solid var(--gt-gray-200);
-  border-radius: var(--gt-radius);
+  background: var(--backgrounds-content-0);
+  border: 1px solid var(--borders-general);
+  border-radius: 8px;
 }
 
 .fdr-chart-container canvas {
@@ -476,7 +610,7 @@
   height: 100%;
 }
 
-/* ---------- Utility ---------- */
+/* ============ Utility ============ */
 
 .fdr-hidden {
   display: none !important;
@@ -495,9 +629,7 @@
     <h2 class="fdr-panel-title">Configure Report</h2>
 
     <!-- Data category checkboxes -->
-    <div class="fdr-mb-8">
-      <strong style="font-size:13px;">Data Categories</strong>
-    </div>
+    <div class="fdr-section-label">Data Categories</div>
     <div class="fdr-categories" id="fdrCategoryChecks"></div>
 
     <!-- Per-category column pickers -->
@@ -1457,12 +1589,12 @@ var CsvExporter = (function () {
 var ChartRenderer = (function () {
   'use strict';
 
-  // Color palette
+  // Zenith categorical data palette
   var COLORS = [
-    '#005f9e', '#28a745', '#fd7e14', '#dc3545', '#6f42c1',
-    '#17a2b8', '#e83e8c', '#20c997', '#ffc107', '#6c757d',
-    '#0056b3', '#1e7e34', '#d63384', '#0dcaf0', '#198754',
-    '#6610f2', '#d63384', '#f8f9fa', '#495057', '#adb5bd'
+    '#428AFF', '#06C989', '#F98C41', '#8256E5', '#3CCDE5',
+    '#E56A6A', '#F5BD60', '#8A94A2', '#0078D3', '#2B6436',
+    '#25477B', '#A01F0E', '#59480D', '#4E677E', '#005AA8',
+    '#3E5265', '#748FAA', '#C0CCD8', '#D9E1E8', '#1F2833'
   ];
 
   /**

@@ -4,12 +4,12 @@
 var ChartRenderer = (function () {
   'use strict';
 
-  // Color palette
+  // Zenith categorical data palette
   var COLORS = [
-    '#005f9e', '#28a745', '#fd7e14', '#dc3545', '#6f42c1',
-    '#17a2b8', '#e83e8c', '#20c997', '#ffc107', '#6c757d',
-    '#0056b3', '#1e7e34', '#d63384', '#0dcaf0', '#198754',
-    '#6610f2', '#d63384', '#f8f9fa', '#495057', '#adb5bd'
+    '#428AFF', '#06C989', '#F98C41', '#8256E5', '#3CCDE5',
+    '#E56A6A', '#F5BD60', '#8A94A2', '#0078D3', '#2B6436',
+    '#25477B', '#A01F0E', '#59480D', '#4E677E', '#005AA8',
+    '#3E5265', '#748FAA', '#C0CCD8', '#D9E1E8', '#1F2833'
   ];
 
   /**
