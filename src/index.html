@@ -13,121 +13,138 @@
 
 <div id="flexDataReporter">
 
-  <!-- ============ PANEL 1: Configure ============ -->
-  <div class="fdr-panel" id="fdrConfigPanel">
-    <h2 class="fdr-panel-title">Configure Report</h2>
-
-    <!-- Data category checkboxes -->
-    <div class="fdr-section-label">Data Categories</div>
-    <div class="fdr-categories" id="fdrCategoryChecks"></div>
-
-    <!-- Per-category column pickers -->
-    <div class="fdr-column-pickers" id="fdrColumnPickers"></div>
-
-    <!-- Diagnostic picker (only for StatusData) -->
-    <div class="fdr-diagnostic-picker" id="fdrDiagnosticPicker">
-      <div class="fdr-filter-group">
-        <label for="fdrDiagnosticSelect">Diagnostic (required for Engine Data)</label>
-        <select id="fdrDiagnosticSelect">
-          <option value="">-- Select a diagnostic --</option>
-          <option value="DiagnosticEngineSpeedId">Engine Speed (RPM)</option>
-          <option value="DiagnosticEngineCoolantTemperatureId">Coolant Temperature</option>
-          <option value="DiagnosticOdometerAdjustmentId">Odometer</option>
-          <option value="DiagnosticFuelLevelId">Fuel Level</option>
-          <option value="DiagnosticBatteryVoltageId">Battery Voltage</option>
-          <option value="DiagnosticEngineOilTemperatureId">Engine Oil Temperature</option>
-          <option value="DiagnosticEngineRoadSpeedId">Vehicle Speed</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Filters -->
-    <div class="fdr-section-label">Filters</div>
-    <div class="fdr-filters">
-      <div class="fdr-filter-group">
-        <label for="fdrDateFrom">From</label>
-        <input type="date" id="fdrDateFrom">
-      </div>
-      <div class="fdr-filter-group">
-        <label for="fdrDateTo">To</label>
-        <input type="date" id="fdrDateTo">
-      </div>
-      <div class="fdr-filter-group">
-        <label for="fdrDeviceSelect">Device Filter</label>
-        <select id="fdrDeviceSelect">
-          <option value="">All Devices (use group filter)</option>
-        </select>
-      </div>
-      <div class="fdr-filter-group">
-        <label for="fdrResultsLimit">Results Limit</label>
-        <input type="number" id="fdrResultsLimit" value="500" min="1" max="50000" step="100">
-      </div>
-    </div>
-
-    <!-- Run button -->
-    <div class="fdr-actions">
-      <button class="fdr-btn fdr-btn-primary" id="fdrRunBtn">Run Report</button>
-      <span class="fdr-status" id="fdrStatus"></span>
-    </div>
+  <!-- Page Header -->
+  <div class="fdr-page-header">
+    <h1>Data Reporter</h1>
+    <p>Query fleet data, view results, and export reports</p>
   </div>
 
-  <!-- ============ PANEL 2: Results Table ============ -->
-  <div class="fdr-panel fdr-results" id="fdrResultsPanel">
-    <h2 class="fdr-panel-title">Results</h2>
+  <div class="fdr-content">
 
-    <!-- Tabs (one per data category) -->
-    <div class="fdr-tabs" id="fdrTabs"></div>
+    <!-- ============ PANEL 1: Configure ============ -->
+    <div class="fdr-panel" id="fdrConfigPanel">
+      <div class="fdr-panel-header">
+        <h2 class="fdr-panel-title">Configure Report</h2>
+      </div>
+      <div class="fdr-panel-body">
 
-    <!-- Table toolbar -->
-    <div class="fdr-table-toolbar">
-      <input type="text" class="fdr-search" id="fdrSearch" placeholder="Search results...">
-      <button class="fdr-btn fdr-btn-success" id="fdrExportCsvBtn">Export CSV</button>
-      <button class="fdr-btn fdr-btn-secondary" id="fdrToggleChartBtn">Show Chart</button>
-    </div>
+        <!-- Data category checkboxes -->
+        <div class="fdr-section-label">Data Categories</div>
+        <div class="fdr-categories" id="fdrCategoryChecks"></div>
 
-    <!-- Table container (per tab) -->
-    <div id="fdrTableContainer"></div>
+        <!-- Per-category column pickers -->
+        <div class="fdr-column-pickers" id="fdrColumnPickers"></div>
 
-    <!-- Pagination -->
-    <div class="fdr-pagination" id="fdrPagination">
-      <span id="fdrPageInfo"></span>
-      <div>
-        <button id="fdrPrevBtn">Previous</button>
-        <button id="fdrNextBtn">Next</button>
+        <!-- Diagnostic picker (only for StatusData) -->
+        <div class="fdr-diagnostic-picker" id="fdrDiagnosticPicker">
+          <div class="fdr-filter-group">
+            <label for="fdrDiagnosticSelect">Diagnostic (required for Engine Data)</label>
+            <select id="fdrDiagnosticSelect">
+              <option value="">-- Select a diagnostic --</option>
+              <option value="DiagnosticEngineSpeedId">Engine Speed (RPM)</option>
+              <option value="DiagnosticEngineCoolantTemperatureId">Coolant Temperature</option>
+              <option value="DiagnosticOdometerAdjustmentId">Odometer</option>
+              <option value="DiagnosticFuelLevelId">Fuel Level</option>
+              <option value="DiagnosticBatteryVoltageId">Battery Voltage</option>
+              <option value="DiagnosticEngineOilTemperatureId">Engine Oil Temperature</option>
+              <option value="DiagnosticEngineRoadSpeedId">Vehicle Speed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="fdr-section-label">Filters</div>
+        <div class="fdr-filters">
+          <div class="fdr-filter-group">
+            <label for="fdrDateFrom">From</label>
+            <input type="date" id="fdrDateFrom">
+          </div>
+          <div class="fdr-filter-group">
+            <label for="fdrDateTo">To</label>
+            <input type="date" id="fdrDateTo">
+          </div>
+          <div class="fdr-filter-group">
+            <label for="fdrDeviceSelect">Device</label>
+            <select id="fdrDeviceSelect">
+              <option value="">All Devices (use group filter)</option>
+            </select>
+          </div>
+          <div class="fdr-filter-group">
+            <label for="fdrResultsLimit">Limit</label>
+            <input type="number" id="fdrResultsLimit" value="500" min="1" max="50000" step="100">
+          </div>
+        </div>
+
+        <!-- Run button -->
+        <div class="fdr-actions">
+          <button class="fdr-btn fdr-btn-primary" id="fdrRunBtn">Run Report</button>
+          <span class="fdr-status" id="fdrStatus"></span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- ============ PANEL 3: Chart ============ -->
-  <div class="fdr-panel fdr-chart-panel" id="fdrChartPanel">
-    <h2 class="fdr-panel-title">Chart</h2>
+    <!-- ============ PANEL 2: Results Table ============ -->
+    <div class="fdr-panel fdr-results" id="fdrResultsPanel">
+      <!-- Tabs sit directly in the panel (no panel-header) -->
+      <div class="fdr-tabs" id="fdrTabs"></div>
 
-    <div class="fdr-chart-controls">
-      <div class="fdr-filter-group">
-        <label for="fdrChartType">Chart Type</label>
-        <select id="fdrChartType">
-          <option value="bar">Bar</option>
-          <option value="line">Line</option>
-          <option value="pie">Pie</option>
-        </select>
+      <div class="fdr-panel-body">
+        <!-- Table toolbar -->
+        <div class="fdr-table-toolbar">
+          <input type="text" class="fdr-search" id="fdrSearch" placeholder="Search results...">
+          <div style="flex:1"></div>
+          <button class="fdr-btn fdr-btn-success" id="fdrExportCsvBtn">Export CSV</button>
+          <button class="fdr-btn fdr-btn-secondary" id="fdrToggleChartBtn">Show Chart</button>
+        </div>
+
+        <!-- Table container -->
+        <div id="fdrTableContainer"></div>
+
+        <!-- Pagination -->
+        <div class="fdr-pagination" id="fdrPagination">
+          <span id="fdrPageInfo"></span>
+          <div>
+            <button id="fdrPrevBtn">Previous</button>
+            <button id="fdrNextBtn">Next</button>
+          </div>
+        </div>
       </div>
-      <div class="fdr-filter-group">
-        <label for="fdrChartValueField">Value Field</label>
-        <select id="fdrChartValueField"></select>
-      </div>
-      <div class="fdr-filter-group">
-        <label for="fdrChartGroupField">Group By</label>
-        <select id="fdrChartGroupField"></select>
-      </div>
-      <button class="fdr-btn fdr-btn-primary" id="fdrRenderChartBtn">Render Chart</button>
-      <button class="fdr-btn fdr-btn-secondary" id="fdrHideChartBtn">Hide Chart</button>
     </div>
 
-    <div class="fdr-chart-container" id="fdrChartContainer">
-      <canvas id="fdrCanvas"></canvas>
-    </div>
-  </div>
+    <!-- ============ PANEL 3: Chart ============ -->
+    <div class="fdr-panel fdr-chart-panel" id="fdrChartPanel">
+      <div class="fdr-panel-header">
+        <h2 class="fdr-panel-title">Chart</h2>
+        <button class="fdr-btn fdr-btn-secondary" id="fdrHideChartBtn" style="padding:6px 16px;font-size:13px;min-height:auto;">Close</button>
+      </div>
+      <div class="fdr-panel-body">
+        <div class="fdr-chart-controls">
+          <div class="fdr-filter-group">
+            <label for="fdrChartType">Chart Type</label>
+            <select id="fdrChartType">
+              <option value="bar">Bar</option>
+              <option value="line">Line</option>
+              <option value="pie">Pie</option>
+            </select>
+          </div>
+          <div class="fdr-filter-group">
+            <label for="fdrChartValueField">Value Field</label>
+            <select id="fdrChartValueField"></select>
+          </div>
+          <div class="fdr-filter-group">
+            <label for="fdrChartGroupField">Group By</label>
+            <select id="fdrChartGroupField"></select>
+          </div>
+          <button class="fdr-btn fdr-btn-primary" id="fdrRenderChartBtn">Render Chart</button>
+        </div>
 
+        <div class="fdr-chart-container" id="fdrChartContainer">
+          <canvas id="fdrCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.fdr-content -->
 </div>
 
 <!-- Scripts loaded in dependency order -->

@@ -1,11 +1,10 @@
 /* ===================================================================
-   Flexible Data Reporter — Styled with Geotab Zenith Design Tokens
-   Ref: @geotab/zenith v3.5.0 — :root custom properties
+   Flexible Data Reporter — Geotab Zenith Design System
+   @geotab/zenith v3.5.0 design tokens
    =================================================================== */
 
 /* ---- Zenith Design Tokens ---- */
 :root {
-  /* Text */
   --text-primary: #1F2833;
   --text-secondary: #4E677E;
   --text-placeholder: #8DA4B9;
@@ -13,69 +12,46 @@
   --text-error-message: #C51A11;
   --text-button-disabled: #C0CCD8;
   --text-reverse-primary: #FFFFFF;
-
-  /* Backgrounds */
   --backgrounds-main: #FFFFFF;
   --backgrounds-content-0: #F9FAFB;
   --backgrounds-content-1: #F2F5F7;
   --backgrounds-content-2: #D9E1E8;
   --backgrounds-hover: #E6EBEF;
   --backgrounds-field-disabled: #E6EBEF;
-  --backgrounds-overlay: rgba(31, 40, 51, 0.4);
   --backgrounds-primary-brand: #25477B;
-
-  /* Borders */
+  --backgrounds-reverse-1: #1F2833;
   --borders-general: #C0CCD8;
   --borders-secondary: #748FAA;
   --borders-form-field--hover: #748FAA;
   --borders-form-field--active: #0078D3;
   --borders-form-field--error: #C51A11;
-
-  /* Actions */
   --action-primary--default: #0078D3;
   --action-primary--hover: #005AA8;
   --action-primary--active: #004080;
   --action-secondary--default: #4E677E;
   --action-secondary--hover: #3E5265;
-  --action-secondary--active: #2F3D4C;
-  --action-destructive--default: #C51A11;
   --action-tertiary--hover: #E6EBEF;
-
-  /* Accents */
-  --accents-warning--main: #FEF7ED;
-  --accents-warning--detail: #59480D;
   --accents-error--main: #FFECEB;
   --accents-error--detail: #A01F0E;
   --accents-success--main: #EDFEF2;
   --accents-success--detail: #2B6436;
   --accents-general--main: #EBF6FF;
   --accents-general--detail: #25477B;
-
-  /* Data / Chart categorical palette */
-  --data--categorical-light-blue: #3CCDE5;
-  --data--categorical-blue: #428AFF;
-  --data--categorical-purple: #8256E5;
-  --data--categorical-green: #06C989;
-  --data--categorical-orange: #F98C41;
-  --data--categorical-yellow: #F5BD60;
-  --data--categorical-red: #E56A6A;
-  --data--categorical-grey: #8A94A2;
-
-  /* Fonts */
-  --main-font: Roboto, "Segoe UI", Segoe, "Helvetica Neue", Helvetica, sans-serif;
-  --main-font-data: "Roboto Mono", "Segoe UI", Segoe, "Helvetica Neue", Helvetica, sans-serif;
+  --main-font: Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
+  --main-font-data: "Roboto Mono", "Segoe UI Mono", monospace;
 }
 
-/* ---- Reset within add-in container ---- */
+/* ---- Page Container ---- */
 #flexDataReporter {
   font-family: var(--main-font);
   font-size: 14px;
   font-weight: 400;
   color: var(--text-primary);
   line-height: 20px;
-  letter-spacing: 0.16px;
-  padding: 24px 32px;
-  max-width: 1400px;
+  background: var(--backgrounds-content-0);
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
 }
 
 #flexDataReporter *,
@@ -84,94 +60,140 @@
   box-sizing: border-box;
 }
 
-/* ---- Zenith heading-04 / heading-s-500 ---- */
+/* ---- Page Header (Zenith pageHeader style) ---- */
+.fdr-page-header {
+  background: var(--backgrounds-primary-brand);
+  color: var(--text-reverse-primary);
+  padding: 20px 32px;
+  margin-bottom: 24px;
+}
+
+.fdr-page-header h1 {
+  font-family: var(--main-font);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0;
+}
+
+.fdr-page-header p {
+  font-size: 13px;
+  font-weight: 300;
+  opacity: 0.85;
+  margin: 4px 0 0 0;
+}
+
+/* ---- Content Area ---- */
+.fdr-content {
+  padding: 0 32px 32px;
+  max-width: 1440px;
+}
+
+/* ---- Card Panels (Zenith card-container) ---- */
+.fdr-panel {
+  background: var(--backgrounds-main);
+  border: 1px solid var(--borders-general);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(31, 40, 51, 0.06), 0 1px 2px rgba(31, 40, 51, 0.04);
+  margin-bottom: 24px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Panel header strip */
+.fdr-panel-header {
+  background: var(--backgrounds-content-1);
+  border-bottom: 1px solid var(--borders-general);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .fdr-panel-title {
   font-family: var(--main-font);
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-  letter-spacing: 0;
   color: var(--text-primary);
-  margin: 0 0 16px 0;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--borders-general);
+  margin: 0;
+  border: none;
+  padding: 0;
 }
 
-/* ============ Panels (Zenith card style) ============ */
-
-.fdr-panel {
-  background: var(--backgrounds-main);
-  border: 1px solid var(--borders-general);
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(31, 40, 51, 0.08);
-  margin-bottom: 20px;
+.fdr-panel-body {
   padding: 24px;
 }
 
-/* ============ Configure Panel ============ */
-
-/* Section sub-label — Zenith heading-05 / heading-xs-500 */
+/* ---- Section Labels (Zenith heading-xs-500) ---- */
 .fdr-section-label {
   font-family: var(--main-font);
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--backgrounds-content-2);
 }
 
-/* Category checkboxes — chip-style toggles */
+/* ============ Category Chips ============ */
+
 .fdr-categories {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 24px;
 }
 
 .fdr-categories label {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
   font-family: var(--main-font);
   font-size: 14px;
   font-weight: 400;
-  line-height: 20px;
-  color: var(--text-primary);
-  padding: 6px 12px;
+  color: var(--text-secondary);
+  padding: 8px 16px;
   border: 1px solid var(--borders-general);
-  border-radius: 20px;
+  border-radius: 24px;
   background: var(--backgrounds-main);
-  transition: background 0.15s, border-color 0.15s;
+  transition: all 0.2s ease;
   user-select: none;
 }
 
 .fdr-categories label:hover {
   background: var(--accents-general--main);
   border-color: var(--action-primary--default);
+  color: var(--text-primary);
 }
 
 .fdr-categories label:has(input:checked) {
-  background: var(--accents-general--main);
+  background: var(--action-primary--default);
   border-color: var(--action-primary--default);
-  color: var(--action-primary--default);
+  color: var(--text-reverse-primary);
   font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 120, 211, 0.3);
+}
+
+.fdr-categories label:has(input:checked):hover {
+  background: var(--action-primary--hover);
+  border-color: var(--action-primary--hover);
 }
 
 .fdr-categories input[type="checkbox"] {
-  accent-color: var(--action-primary--default);
-  width: 16px;
-  height: 16px;
+  display: none;
 }
 
-/* Column pickers */
+/* ---- Column Pickers ---- */
 .fdr-column-pickers {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .fdr-column-group {
   margin-bottom: 12px;
-  padding: 16px;
+  padding: 16px 20px;
   background: var(--backgrounds-content-0);
   border: 1px solid var(--borders-general);
   border-radius: 8px;
@@ -179,66 +201,67 @@
 
 .fdr-column-group-title {
   font-family: var(--main-font);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--accents-general--detail);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .fdr-column-group .fdr-columns {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 20px;
+  gap: 6px 24px;
 }
 
 .fdr-column-group .fdr-columns label {
   font-family: var(--main-font);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0.32px;
   color: var(--text-primary);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
   padding: 4px 0;
 }
 
 .fdr-column-group .fdr-columns input[type="checkbox"] {
   accent-color: var(--action-primary--default);
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 
-/* Filters row */
+/* ============ Form Fields (Zenith form-field) ============ */
+
 .fdr-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 20px;
   align-items: flex-end;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .fdr-filter-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-/* Zenith label-01 / body-label-400 */
 .fdr-filter-group label,
 .fdr-diagnostic-picker label,
 .fdr-chart-controls label {
   font-family: var(--main-font);
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 16px;
   letter-spacing: 0.32px;
   color: var(--text-secondary);
+  text-transform: uppercase;
 }
 
-/* Zenith form field inputs */
 .fdr-filter-group input,
 .fdr-filter-group select,
 .fdr-diagnostic-picker select,
@@ -248,13 +271,24 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border: 1px solid var(--borders-general);
   border-radius: 4px;
   background: var(--backgrounds-main);
   color: var(--text-primary);
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.fdr-filter-group select,
+.fdr-diagnostic-picker select,
+.fdr-chart-controls select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234E677E' d='M2 4l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
 }
 
 .fdr-filter-group input:hover,
@@ -268,17 +302,23 @@
 .fdr-diagnostic-picker select:focus,
 .fdr-search:focus {
   border-color: var(--borders-form-field--active);
-  box-shadow: 0 0 0 2px rgba(0, 120, 211, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 120, 211, 0.15);
+}
+
+.fdr-filter-group input::placeholder,
+.fdr-search::placeholder {
+  color: var(--text-placeholder);
 }
 
 /* Diagnostic picker */
 .fdr-diagnostic-picker {
   display: none;
-  margin-bottom: 20px;
-  padding: 16px;
-  background: var(--backgrounds-content-0);
-  border: 1px solid var(--borders-general);
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--accents-general--main);
+  border: 1px solid var(--action-primary--default);
   border-radius: 8px;
+  border-left: 4px solid var(--action-primary--default);
 }
 
 .fdr-diagnostic-picker.visible {
@@ -287,72 +327,81 @@
 
 .fdr-diagnostic-picker select {
   min-width: 320px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
-/* ============ Buttons (Zenith-aligned) ============ */
+/* ============ Buttons (Zenith) ============ */
 
 .fdr-btn {
   font-family: var(--main-font);
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-  padding: 8px 24px;
+  padding: 10px 28px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  white-space: nowrap;
 }
 
 .fdr-btn:disabled {
   background: var(--backgrounds-field-disabled);
   color: var(--text-button-disabled);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* Primary — Zenith action-primary */
 .fdr-btn-primary {
   background: var(--action-primary--default);
   color: var(--text-reverse-primary);
+  box-shadow: 0 1px 2px rgba(0, 120, 211, 0.2);
 }
 
 .fdr-btn-primary:hover:not(:disabled) {
   background: var(--action-primary--hover);
+  box-shadow: 0 2px 4px rgba(0, 120, 211, 0.3);
 }
 
 .fdr-btn-primary:active:not(:disabled) {
   background: var(--action-primary--active);
+  box-shadow: none;
 }
 
-/* Secondary — Zenith action-secondary */
 .fdr-btn-secondary {
-  background: transparent;
+  background: var(--backgrounds-main);
   color: var(--action-secondary--default);
   border: 1px solid var(--borders-general);
 }
 
 .fdr-btn-secondary:hover:not(:disabled) {
   background: var(--action-tertiary--hover);
+  border-color: var(--borders-secondary);
   color: var(--action-secondary--hover);
 }
 
-/* Success — uses Zenith success accent */
 .fdr-btn-success {
   background: var(--accents-success--detail);
   color: var(--text-reverse-primary);
+  box-shadow: 0 1px 2px rgba(43, 100, 54, 0.2);
 }
 
 .fdr-btn-success:hover:not(:disabled) {
   background: #236E32;
+  box-shadow: 0 2px 4px rgba(43, 100, 54, 0.3);
 }
 
 .fdr-actions {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--backgrounds-content-2);
 }
 
 /* ============ Status / Loading ============ */
@@ -361,19 +410,23 @@
   font-family: var(--main-font);
   font-size: 14px;
   color: var(--text-secondary);
-  margin-left: 12px;
+  margin-left: 8px;
 }
 
 .fdr-status.error {
   color: var(--text-error-message);
   font-weight: 500;
+  background: var(--accents-error--main);
+  padding: 6px 12px;
+  border-radius: 4px;
+  border-left: 3px solid var(--accents-error--detail);
 }
 
 .fdr-spinner {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--borders-general);
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--backgrounds-content-2);
   border-top-color: var(--action-primary--default);
   border-radius: 50%;
   animation: fdr-spin 0.6s linear infinite;
@@ -395,12 +448,14 @@
   display: block;
 }
 
-/* Tabs — Zenith tab-bar style */
+/* Tabs — Zenith tab-bar */
 .fdr-tabs {
   display: flex;
   gap: 0;
+  background: var(--backgrounds-content-1);
   border-bottom: 1px solid var(--borders-general);
-  margin-bottom: 16px;
+  padding: 0 24px;
+  overflow-x: auto;
 }
 
 .fdr-tab {
@@ -408,31 +463,41 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-  padding: 10px 20px;
+  padding: 14px 20px;
   border: none;
   background: none;
   color: var(--text-secondary);
   cursor: pointer;
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
   margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
+  transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .fdr-tab:hover {
   color: var(--text-primary);
-  background: var(--action-tertiary--hover);
+  background: var(--backgrounds-hover);
 }
 
 .fdr-tab.active {
   color: var(--action-primary--default);
   border-bottom-color: var(--action-primary--default);
+  background: var(--backgrounds-main);
 }
 
 .fdr-tab-count {
   font-weight: 400;
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--text-placeholder);
   margin-left: 6px;
+  background: var(--backgrounds-content-1);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.fdr-tab.active .fdr-tab-count {
+  background: var(--accents-general--main);
+  color: var(--accents-general--detail);
 }
 
 /* Table toolbar */
@@ -440,19 +505,18 @@
   display: flex;
   gap: 12px;
   align-items: center;
-  margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
 .fdr-search {
-  width: 240px;
+  width: 260px;
 }
 
-/* ============ Data Table (Zenith table style) ============ */
+/* ============ Data Table (Zenith data-grid) ============ */
 
 .fdr-table-wrap {
   overflow-x: auto;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   border: 1px solid var(--borders-general);
   border-radius: 8px;
 }
@@ -467,22 +531,27 @@
 
 .fdr-table thead th {
   background: var(--backgrounds-content-1);
+  font-family: var(--main-font);
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.32px;
+  text-transform: uppercase;
   text-align: left;
-  padding: 10px 16px;
+  padding: 12px 16px;
   color: var(--text-secondary);
   border-bottom: 1px solid var(--borders-general);
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .fdr-table thead th:hover {
   background: var(--backgrounds-hover);
+  color: var(--text-primary);
 }
 
 .fdr-table thead th .sort-arrow {
@@ -505,12 +574,17 @@
   padding: 10px 16px;
   border-bottom: 1px solid var(--backgrounds-content-1);
   white-space: nowrap;
-  max-width: 300px;
+  max-width: 320px;
   overflow: hidden;
   text-overflow: ellipsis;
   color: var(--text-primary);
   font-family: var(--main-font-data);
   font-size: 13px;
+  line-height: 18px;
+}
+
+.fdr-table tbody tr {
+  transition: background 0.1s ease;
 }
 
 .fdr-table tbody tr:hover {
@@ -533,40 +607,55 @@
   align-items: center;
   justify-content: space-between;
   font-family: var(--main-font);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
-  padding: 8px 0;
+  padding: 12px 0 4px;
 }
 
 .fdr-pagination button {
   font-family: var(--main-font);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  padding: 6px 16px;
+  padding: 8px 20px;
   border: 1px solid var(--borders-general);
   border-radius: 4px;
   background: var(--backgrounds-main);
   color: var(--action-secondary--default);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.15s ease;
 }
 
 .fdr-pagination button:hover:not(:disabled) {
   background: var(--action-tertiary--hover);
+  border-color: var(--borders-secondary);
 }
 
 .fdr-pagination button:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
-/* No data — Zenith empty-state style */
+/* No data — Zenith empty-state */
 .fdr-no-data {
   text-align: center;
-  padding: 48px 24px;
+  padding: 60px 24px;
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
+}
+
+.fdr-no-data::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  background: var(--backgrounds-content-1);
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238DA4B9'%3E%3Cpath d='M20 6H12L10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6ZM20 18H4V6H9.17L11.17 8H20V18ZM12 14H14V10H12V14Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
 }
 
 /* ============ Chart Panel ============ */
@@ -583,18 +672,18 @@
   display: flex;
   gap: 16px;
   align-items: flex-end;
-  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
 .fdr-chart-container {
   position: relative;
   width: 100%;
-  max-width: 900px;
-  height: 400px;
-  background: var(--backgrounds-content-0);
+  max-width: 960px;
+  height: 420px;
+  background: var(--backgrounds-main);
   border: 1px solid var(--borders-general);
   border-radius: 8px;
+  padding: 16px;
 }
 
 .fdr-chart-container canvas {
