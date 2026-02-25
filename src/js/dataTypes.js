@@ -331,6 +331,42 @@ var DataTypes = (function () {
         { key: 'chargeType', label: 'Charge Type', defaultOn: true, type: 'string' },
         { key: 'chargeIsEstimated', label: 'Estimated', defaultOn: false, type: 'boolean' }
       ]
+    },
+
+    DriverRegulation: {
+      label: 'Driver Regulation',
+      typeName: 'DriverRegulation',
+      needsDateRange: false,
+      fields: [
+        { key: 'id', label: 'Regulation ID', defaultOn: false, type: 'string' },
+        { key: 'driver.id', label: 'Driver', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'driverGroups', label: 'Driver Groups', defaultOn: false, type: 'string' },
+        { key: 'workDay', label: 'Work Day (hrs)', defaultOn: true, type: 'number' },
+        { key: 'workWeek', label: 'Work Week (hrs)', defaultOn: true, type: 'number' },
+        { key: 'dailyRest', label: 'Daily Rest (hrs)', defaultOn: true, type: 'number' },
+        { key: 'weeklyRest', label: 'Weekly Rest (hrs)', defaultOn: false, type: 'number' },
+        { key: 'dayStart', label: 'Day Start', defaultOn: false, type: 'number' },
+        { key: 'cycleDuration', label: 'Cycle Duration', defaultOn: false, type: 'number' }
+      ]
+    },
+
+    DeviceStatusInfo: {
+      label: 'Asset Status',
+      typeName: 'DeviceStatusInfo',
+      needsDateRange: false,
+      fields: [
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'dateTime', label: 'Last Comm', defaultOn: true, type: 'date' },
+        { key: 'latitude', label: 'Latitude', defaultOn: true, type: 'number' },
+        { key: 'longitude', label: 'Longitude', defaultOn: true, type: 'number' },
+        { key: 'bearing', label: 'Bearing', defaultOn: false, type: 'number' },
+        { key: 'speed', label: 'Speed (km/h)', defaultOn: true, type: 'number' },
+        { key: 'isDeviceCommunicating', label: 'Communicating', defaultOn: true, type: 'boolean' },
+        { key: 'isDriving', label: 'Driving', defaultOn: true, type: 'boolean' },
+        { key: 'currentStateDuration', label: 'State Duration', defaultOn: true, type: 'duration' },
+        { key: 'isHistoricLastDriver', label: 'Historic Last Driver', defaultOn: false, type: 'boolean' },
+        { key: 'driver.id', label: 'Driver', defaultOn: true, type: 'id', resolve: 'user' }
+      ]
     }
   };
 
