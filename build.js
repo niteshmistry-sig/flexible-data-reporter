@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
- * build.js — Packages the src/ directory into a single config.json
- * that can be pasted directly into MyGeotab Administration > Add-Ins.
+ * build.js — Builds the add-in:
+ *   1. Assembles src/ into a single dist/index.html (for GitHub Pages hosting)
+ *   2. Generates config.json pointing to the hosted URL
  *
- * Usage:  node build.js
- * Output: config.json in project root
+ * Usage:  node build.js <github-username>
+ * Output: dist/index.html, dist/images/icon.svg, config.json
  */
 
 'use strict';
@@ -13,7 +14,12 @@ var fs = require('fs');
 var path = require('path');
 
 var SRC = path.join(__dirname, 'src');
+var DIST = path.join(__dirname, 'dist');
 var OUT = path.join(__dirname, 'config.json');
+
+var githubUser = process.argv[2] || 'YOUR_GITHUB_USERNAME';
+var repoName = 'flexible-data-reporter';
+var baseUrl = 'https://' + githubUser + '.github.io/' + repoName;
 
 // Read source files
 function readSrc(relPath) {
@@ -52,24 +58,34 @@ jsFiles.forEach(function (f) {
   html = html.replace(placeholder, jsContents[f]);
 });
 
-// ---- Build config.json ----
+// ---- Write dist/ files ----
+
+if (!fs.existsSync(DIST)) fs.mkdirSync(DIST);
+var imagesDir = path.join(DIST, 'images');
+if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir);
+
+fs.writeFileSync(path.join(DIST, 'index.html'), html, 'utf8');
+
+var svgIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#005f9e">' +
+  '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z' +
+  'M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>';
+
+fs.writeFileSync(path.join(imagesDir, 'icon.svg'), svgIcon, 'utf8');
+
+// ---- Build config.json (matches working MyGeotab format) ----
 
 var config = {
-  name: 'Flexible Data Reporter',
+  name: 'Data Reporter',
   supportEmail: 'support@example.com',
   version: '1.0.0',
   items: [
     {
-      url: 'data:text/html;charset=utf-8,' + encodeURIComponent(html),
+      url: baseUrl + '/index.html',
       path: 'ActivityLink/',
       menuName: {
         en: 'Data Reporter'
       },
-      icon: 'data:image/svg+xml;base64,' + Buffer.from(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#005f9e">' +
-        '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z' +
-        'M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>'
-      ).toString('base64')
+      svgIcon: baseUrl + '/images/icon.svg'
     }
   ],
   isSigned: false
@@ -83,11 +99,11 @@ var htmlSize = Buffer.byteLength(html, 'utf8');
 var configSize = fs.statSync(OUT).size;
 
 console.log('Build complete!');
-console.log('  HTML size:   ' + (htmlSize / 1024).toFixed(1) + ' KB');
-console.log('  config.json: ' + (configSize / 1024).toFixed(1) + ' KB');
+console.log('  dist/index.html: ' + (htmlSize / 1024).toFixed(1) + ' KB');
+console.log('  config.json:     ' + (configSize / 1024).toFixed(1) + ' KB');
+console.log('  Base URL:        ' + baseUrl);
 console.log('');
-console.log('To install:');
-console.log('  1. Log into MyGeotab as Administrator');
-console.log('  2. Go to Administration > System Settings > Add-Ins');
-console.log('  3. Click "Add", paste the contents of config.json');
-console.log('  4. Save and refresh — "Data Reporter" appears under Activity');
+console.log('Next steps:');
+console.log('  1. Push to GitHub and enable GitHub Pages (branch: main, folder: /dist)');
+console.log('  2. In MyGeotab: Administration > System Settings > Add-Ins > Add');
+console.log('  3. Paste config.json contents, save, and refresh');

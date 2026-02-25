@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Data Reporter</title>
+  <style>/* ===================================================================
+   Flexible Data Reporter — MyGeotab Add-In Styles
+   Consistent with MyGeotab look & feel (Geotab blue, neutral grays)
+   =================================================================== */
+
+:root {
+  --gt-blue: #005f9e;
+  --gt-blue-dark: #004a7c;
+  --gt-blue-light: #e8f4fc;
+  --gt-green: #28a745;
+  --gt-red: #dc3545;
+  --gt-orange: #fd7e14;
+  --gt-gray-50: #f8f9fa;
+  --gt-gray-100: #f1f3f5;
+  --gt-gray-200: #e9ecef;
+  --gt-gray-300: #dee2e6;
+  --gt-gray-400: #ced4da;
+  --gt-gray-600: #868e96;
+  --gt-gray-700: #495057;
+  --gt-gray-800: #343a40;
+  --gt-gray-900: #212529;
+  --gt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --gt-radius: 4px;
+  --gt-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Reset within our add-in container */
+#flexDataReporter {
+  font-family: var(--gt-font);
+  font-size: 14px;
+  color: var(--gt-gray-800);
+  line-height: 1.5;
+  padding: 16px 24px;
+  max-width: 1400px;
+}
+
+#flexDataReporter *,
+#flexDataReporter *::before,
+#flexDataReporter *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Panel Sections ---------- */
+
+.fdr-panel {
+  background: #fff;
+  border: 1px solid var(--gt-gray-200);
+  border-radius: var(--gt-radius);
+  box-shadow: var(--gt-shadow);
+  margin-bottom: 16px;
+  padding: 16px 20px;
+}
+
+.fdr-panel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gt-gray-900);
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gt-blue);
+}
+
+/* ---------- Configure Panel ---------- */
+
+.fdr-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 14px;
+}
+
+.fdr-categories label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: var(--gt-radius);
+  transition: background 0.15s;
+}
+
+.fdr-categories label:hover {
+  background: var(--gt-blue-light);
+}
+
+.fdr-column-pickers {
+  margin-bottom: 14px;
+}
+
+.fdr-column-group {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: var(--gt-gray-50);
+  border: 1px solid var(--gt-gray-200);
+  border-radius: var(--gt-radius);
+}
+
+.fdr-column-group-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--gt-blue);
+  margin-bottom: 6px;
+}
+
+.fdr-column-group .fdr-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+
+.fdr-column-group .fdr-columns label {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+/* Filters row */
+.fdr-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 14px;
+}
+
+.fdr-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fdr-filter-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gt-gray-700);
+}
+
+.fdr-filter-group input,
+.fdr-filter-group select {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+  background: #fff;
+  color: var(--gt-gray-800);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.fdr-filter-group input:focus,
+.fdr-filter-group select:focus {
+  border-color: var(--gt-blue);
+  box-shadow: 0 0 0 2px rgba(0, 95, 158, 0.15);
+}
+
+/* Diagnostic picker (only for StatusData) */
+.fdr-diagnostic-picker {
+  display: none;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  background: var(--gt-gray-50);
+  border: 1px solid var(--gt-gray-200);
+  border-radius: var(--gt-radius);
+}
+
+.fdr-diagnostic-picker.visible {
+  display: block;
+}
+
+.fdr-diagnostic-picker label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gt-gray-700);
+}
+
+.fdr-diagnostic-picker select {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+  min-width: 300px;
+  margin-top: 3px;
+}
+
+/* Buttons */
+.fdr-btn {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border: none;
+  border-radius: var(--gt-radius);
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.fdr-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fdr-btn-primary {
+  background: var(--gt-blue);
+  color: #fff;
+}
+
+.fdr-btn-primary:hover:not(:disabled) {
+  background: var(--gt-blue-dark);
+}
+
+.fdr-btn-secondary {
+  background: var(--gt-gray-200);
+  color: var(--gt-gray-800);
+}
+
+.fdr-btn-secondary:hover:not(:disabled) {
+  background: var(--gt-gray-300);
+}
+
+.fdr-btn-success {
+  background: var(--gt-green);
+  color: #fff;
+}
+
+.fdr-btn-success:hover:not(:disabled) {
+  background: #218838;
+}
+
+.fdr-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Status / loading */
+.fdr-status {
+  font-size: 13px;
+  color: var(--gt-gray-600);
+  margin-left: 12px;
+}
+
+.fdr-status.error {
+  color: var(--gt-red);
+  font-weight: 600;
+}
+
+.fdr-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--gt-gray-300);
+  border-top-color: var(--gt-blue);
+  border-radius: 50%;
+  animation: fdr-spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes fdr-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Results Panel ---------- */
+
+.fdr-results {
+  display: none;
+}
+
+.fdr-results.visible {
+  display: block;
+}
+
+/* Tabs */
+.fdr-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--gt-gray-200);
+  margin-bottom: 12px;
+}
+
+.fdr-tab {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  color: var(--gt-gray-600);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.fdr-tab:hover {
+  color: var(--gt-gray-800);
+}
+
+.fdr-tab.active {
+  color: var(--gt-blue);
+  border-bottom-color: var(--gt-blue);
+}
+
+.fdr-tab-count {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--gt-gray-600);
+  margin-left: 4px;
+}
+
+/* Table toolbar */
+.fdr-table-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.fdr-search {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+  width: 220px;
+  outline: none;
+}
+
+.fdr-search:focus {
+  border-color: var(--gt-blue);
+  box-shadow: 0 0 0 2px rgba(0, 95, 158, 0.15);
+}
+
+/* Data table */
+.fdr-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 10px;
+}
+
+.fdr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.fdr-table thead th {
+  background: var(--gt-gray-100);
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--gt-gray-300);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.fdr-table thead th:hover {
+  background: var(--gt-gray-200);
+}
+
+.fdr-table thead th .sort-arrow {
+  font-size: 10px;
+  margin-left: 4px;
+  color: var(--gt-gray-400);
+}
+
+.fdr-table thead th .sort-arrow.asc::after { content: '\25B2'; color: var(--gt-blue); }
+.fdr-table thead th .sort-arrow.desc::after { content: '\25BC'; color: var(--gt-blue); }
+
+.fdr-table tbody td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--gt-gray-200);
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fdr-table tbody tr:hover {
+  background: var(--gt-blue-light);
+}
+
+/* Pagination */
+.fdr-pagination {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--gt-gray-700);
+}
+
+.fdr-pagination button {
+  font-family: var(--gt-font);
+  font-size: 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+  background: #fff;
+  cursor: pointer;
+}
+
+.fdr-pagination button:hover:not(:disabled) {
+  background: var(--gt-gray-100);
+}
+
+.fdr-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* No data */
+.fdr-no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--gt-gray-600);
+  font-size: 14px;
+}
+
+/* ---------- Chart Panel ---------- */
+
+.fdr-chart-panel {
+  display: none;
+}
+
+.fdr-chart-panel.visible {
+  display: block;
+}
+
+.fdr-chart-controls {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.fdr-chart-controls label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gt-gray-700);
+}
+
+.fdr-chart-controls select {
+  font-family: var(--gt-font);
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--gt-gray-300);
+  border-radius: var(--gt-radius);
+}
+
+.fdr-chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 400px;
+  background: var(--gt-gray-50);
+  border: 1px solid var(--gt-gray-200);
+  border-radius: var(--gt-radius);
+}
+
+.fdr-chart-container canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Utility ---------- */
+
+.fdr-hidden {
+  display: none !important;
+}
+
+.fdr-mb-8 { margin-bottom: 8px; }
+.fdr-mb-12 { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<div id="flexDataReporter">
+
+  <!-- ============ PANEL 1: Configure ============ -->
+  <div class="fdr-panel" id="fdrConfigPanel">
+    <h2 class="fdr-panel-title">Configure Report</h2>
+
+    <!-- Data category checkboxes -->
+    <div class="fdr-mb-8">
+      <strong style="font-size:13px;">Data Categories</strong>
+    </div>
+    <div class="fdr-categories" id="fdrCategoryChecks"></div>
+
+    <!-- Per-category column pickers -->
+    <div class="fdr-column-pickers" id="fdrColumnPickers"></div>
+
+    <!-- Diagnostic picker (only for StatusData) -->
+    <div class="fdr-diagnostic-picker" id="fdrDiagnosticPicker">
+      <div class="fdr-filter-group">
+        <label for="fdrDiagnosticSelect">Diagnostic (required for Engine Data)</label>
+        <select id="fdrDiagnosticSelect">
+          <option value="">-- Select a diagnostic --</option>
+          <option value="DiagnosticEngineSpeedId">Engine Speed (RPM)</option>
+          <option value="DiagnosticEngineCoolantTemperatureId">Coolant Temperature</option>
+          <option value="DiagnosticOdometerAdjustmentId">Odometer</option>
+          <option value="DiagnosticFuelLevelId">Fuel Level</option>
+          <option value="DiagnosticBatteryVoltageId">Battery Voltage</option>
+          <option value="DiagnosticEngineOilTemperatureId">Engine Oil Temperature</option>
+          <option value="DiagnosticEngineRoadSpeedId">Vehicle Speed</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="fdr-filters">
+      <div class="fdr-filter-group">
+        <label for="fdrDateFrom">From</label>
+        <input type="date" id="fdrDateFrom">
+      </div>
+      <div class="fdr-filter-group">
+        <label for="fdrDateTo">To</label>
+        <input type="date" id="fdrDateTo">
+      </div>
+      <div class="fdr-filter-group">
+        <label for="fdrDeviceSelect">Device Filter</label>
+        <select id="fdrDeviceSelect">
+          <option value="">All Devices (use group filter)</option>
+        </select>
+      </div>
+      <div class="fdr-filter-group">
+        <label for="fdrResultsLimit">Results Limit</label>
+        <input type="number" id="fdrResultsLimit" value="500" min="1" max="50000" step="100">
+      </div>
+    </div>
+
+    <!-- Run button -->
+    <div class="fdr-actions">
+      <button class="fdr-btn fdr-btn-primary" id="fdrRunBtn">Run Report</button>
+      <span class="fdr-status" id="fdrStatus"></span>
+    </div>
+  </div>
+
+  <!-- ============ PANEL 2: Results Table ============ -->
+  <div class="fdr-panel fdr-results" id="fdrResultsPanel">
+    <h2 class="fdr-panel-title">Results</h2>
+
+    <!-- Tabs (one per data category) -->
+    <div class="fdr-tabs" id="fdrTabs"></div>
+
+    <!-- Table toolbar -->
+    <div class="fdr-table-toolbar">
+      <input type="text" class="fdr-search" id="fdrSearch" placeholder="Search results...">
+      <button class="fdr-btn fdr-btn-success" id="fdrExportCsvBtn">Export CSV</button>
+      <button class="fdr-btn fdr-btn-secondary" id="fdrToggleChartBtn">Show Chart</button>
+    </div>
+
+    <!-- Table container (per tab) -->
+    <div id="fdrTableContainer"></div>
+
+    <!-- Pagination -->
+    <div class="fdr-pagination" id="fdrPagination">
+      <span id="fdrPageInfo"></span>
+      <div>
+        <button id="fdrPrevBtn">Previous</button>
+        <button id="fdrNextBtn">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PANEL 3: Chart ============ -->
+  <div class="fdr-panel fdr-chart-panel" id="fdrChartPanel">
+    <h2 class="fdr-panel-title">Chart</h2>
+
+    <div class="fdr-chart-controls">
+      <div class="fdr-filter-group">
+        <label for="fdrChartType">Chart Type</label>
+        <select id="fdrChartType">
+          <option value="bar">Bar</option>
+          <option value="line">Line</option>
+          <option value="pie">Pie</option>
+        </select>
+      </div>
+      <div class="fdr-filter-group">
+        <label for="fdrChartValueField">Value Field</label>
+        <select id="fdrChartValueField"></select>
+      </div>
+      <div class="fdr-filter-group">
+        <label for="fdrChartGroupField">Group By</label>
+        <select id="fdrChartGroupField"></select>
+      </div>
+      <button class="fdr-btn fdr-btn-primary" id="fdrRenderChartBtn">Render Chart</button>
+      <button class="fdr-btn fdr-btn-secondary" id="fdrHideChartBtn">Hide Chart</button>
+    </div>
+
+    <div class="fdr-chart-container" id="fdrChartContainer">
+      <canvas id="fdrCanvas"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- Scripts loaded in dependency order -->
+<script>/**
+ * dataTypes.js — Central registry of all data categories, API mappings, and field definitions.
+ * Every other module references this to know what can be queried and displayed.
+ */
+var DataTypes = (function () {
+  'use strict';
+
+  /**
+   * Field definition shape:
+   *   { key, label, defaultOn, type, resolve? }
+   *
+   * key        — dot-path into the API result object (e.g. "device.id")
+   * label      — human-readable column header
+   * defaultOn  — whether the column is checked by default
+   * type       — "string" | "number" | "date" | "boolean" | "id"
+   * resolve    — optional resolver name used by CacheManager ("device", "zone", "rule", "user", "diagnostic")
+   */
+
+  var categories = {
+    Trip: {
+      label: 'Trips',
+      typeName: 'Trip',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Trip ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'driver.id', label: 'Driver', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'start', label: 'Start Time', defaultOn: true, type: 'date' },
+        { key: 'stop', label: 'Stop Time', defaultOn: true, type: 'date' },
+        { key: 'distance', label: 'Distance (km)', defaultOn: true, type: 'number' },
+        { key: 'drivingDuration', label: 'Driving Duration', defaultOn: true, type: 'duration' },
+        { key: 'stopDuration', label: 'Stop Duration', defaultOn: false, type: 'duration' },
+        { key: 'idlingDuration', label: 'Idling Duration', defaultOn: false, type: 'duration' },
+        { key: 'maximumSpeed', label: 'Max Speed (km/h)', defaultOn: true, type: 'number' },
+        { key: 'averageSpeed', label: 'Avg Speed (km/h)', defaultOn: false, type: 'number' },
+        { key: 'stopPoint.x', label: 'Stop Longitude', defaultOn: false, type: 'number' },
+        { key: 'stopPoint.y', label: 'Stop Latitude', defaultOn: false, type: 'number' },
+        { key: 'nextTripDrivingDuration', label: 'Next Trip Driving Duration', defaultOn: false, type: 'duration' }
+      ]
+    },
+
+    Device: {
+      label: 'Devices',
+      typeName: 'Device',
+      needsDateRange: false,
+      fields: [
+        { key: 'id', label: 'Device ID', defaultOn: false, type: 'string' },
+        { key: 'name', label: 'Name', defaultOn: true, type: 'string' },
+        { key: 'serialNumber', label: 'Serial Number', defaultOn: true, type: 'string' },
+        { key: 'deviceType', label: 'Device Type', defaultOn: true, type: 'string' },
+        { key: 'vehicleIdentificationNumber', label: 'VIN', defaultOn: true, type: 'string' },
+        { key: 'licensePlate', label: 'License Plate', defaultOn: true, type: 'string' },
+        { key: 'comment', label: 'Comment', defaultOn: false, type: 'string' },
+        { key: 'engineVehicleIdentificationNumber', label: 'Engine VIN', defaultOn: false, type: 'string' },
+        { key: 'activeFrom', label: 'Active From', defaultOn: true, type: 'date' },
+        { key: 'activeTo', label: 'Active To', defaultOn: false, type: 'date' },
+        { key: 'productId', label: 'Product ID', defaultOn: false, type: 'number' }
+      ]
+    },
+
+    FaultData: {
+      label: 'Faults',
+      typeName: 'FaultData',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Fault ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'diagnostic.id', label: 'Diagnostic', defaultOn: true, type: 'id', resolve: 'diagnostic' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'failureMode.id', label: 'Failure Mode', defaultOn: true, type: 'string' },
+        { key: 'faultState', label: 'Fault State', defaultOn: true, type: 'string' },
+        { key: 'controller.id', label: 'Controller', defaultOn: false, type: 'string' },
+        { key: 'count', label: 'Count', defaultOn: false, type: 'number' },
+        { key: 'malfunction', label: 'Malfunction', defaultOn: false, type: 'boolean' }
+      ]
+    },
+
+    ExceptionEvent: {
+      label: 'Exception Events',
+      typeName: 'ExceptionEvent',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Event ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'driver.id', label: 'Driver', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'rule.id', label: 'Rule', defaultOn: true, type: 'id', resolve: 'rule' },
+        { key: 'activeFrom', label: 'Start', defaultOn: true, type: 'date' },
+        { key: 'activeTo', label: 'End', defaultOn: true, type: 'date' },
+        { key: 'duration', label: 'Duration', defaultOn: true, type: 'duration' },
+        { key: 'distance', label: 'Distance (km)', defaultOn: false, type: 'number' },
+        { key: 'state', label: 'State', defaultOn: true, type: 'string' }
+      ]
+    },
+
+    LogRecord: {
+      label: 'GPS Logs',
+      typeName: 'LogRecord',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Log ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'latitude', label: 'Latitude', defaultOn: true, type: 'number' },
+        { key: 'longitude', label: 'Longitude', defaultOn: true, type: 'number' },
+        { key: 'speed', label: 'Speed (km/h)', defaultOn: true, type: 'number' }
+      ]
+    },
+
+    StatusData: {
+      label: 'Engine / Status Data',
+      typeName: 'StatusData',
+      needsDateRange: true,
+      needsDiagnostic: true,
+      fields: [
+        { key: 'id', label: 'Record ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'diagnostic.id', label: 'Diagnostic', defaultOn: true, type: 'id', resolve: 'diagnostic' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'data', label: 'Value', defaultOn: true, type: 'number' }
+      ]
+    },
+
+    Zone: {
+      label: 'Zones',
+      typeName: 'Zone',
+      needsDateRange: false,
+      fields: [
+        { key: 'id', label: 'Zone ID', defaultOn: false, type: 'string' },
+        { key: 'name', label: 'Name', defaultOn: true, type: 'string' },
+        { key: 'comment', label: 'Comment', defaultOn: false, type: 'string' },
+        { key: 'displayed', label: 'Displayed', defaultOn: true, type: 'boolean' },
+        { key: 'mustIdentifyStops', label: 'Must Identify Stops', defaultOn: false, type: 'boolean' },
+        { key: 'activeFrom', label: 'Active From', defaultOn: true, type: 'date' },
+        { key: 'activeTo', label: 'Active To', defaultOn: false, type: 'date' },
+        { key: 'externalReference', label: 'External Reference', defaultOn: false, type: 'string' },
+        { key: 'zoneTypes', label: 'Zone Types', defaultOn: true, type: 'string' }
+      ]
+    },
+
+    User: {
+      label: 'Drivers',
+      typeName: 'User',
+      needsDateRange: false,
+      isDriverOnly: true,
+      fields: [
+        { key: 'id', label: 'User ID', defaultOn: false, type: 'string' },
+        { key: 'name', label: 'Username', defaultOn: true, type: 'string' },
+        { key: 'firstName', label: 'First Name', defaultOn: true, type: 'string' },
+        { key: 'lastName', label: 'Last Name', defaultOn: true, type: 'string' },
+        { key: 'employeeNo', label: 'Employee #', defaultOn: true, type: 'string' },
+        { key: 'isDriver', label: 'Is Driver', defaultOn: false, type: 'boolean' },
+        { key: 'driverGroups', label: 'Driver Groups', defaultOn: false, type: 'string' },
+        { key: 'activeFrom', label: 'Active From', defaultOn: true, type: 'date' },
+        { key: 'activeTo', label: 'Active To', defaultOn: false, type: 'date' },
+        { key: 'phoneNumber', label: 'Phone', defaultOn: false, type: 'string' }
+      ]
+    },
+
+    DriverChange: {
+      label: 'Driver Changes',
+      typeName: 'DriverChange',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Change ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'driver.id', label: 'Driver', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'type', label: 'Type', defaultOn: true, type: 'string' }
+      ]
+    },
+
+    DutyStatusLog: {
+      label: 'HOS / Duty Status',
+      typeName: 'DutyStatusLog',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Log ID', defaultOn: false, type: 'string' },
+        { key: 'driver.id', label: 'Driver', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'status', label: 'Status', defaultOn: true, type: 'string' },
+        { key: 'origin', label: 'Origin', defaultOn: true, type: 'string' },
+        { key: 'state', label: 'State', defaultOn: false, type: 'string' },
+        { key: 'location.x', label: 'Longitude', defaultOn: false, type: 'number' },
+        { key: 'location.y', label: 'Latitude', defaultOn: false, type: 'number' },
+        { key: 'annotations', label: 'Annotations', defaultOn: false, type: 'string' },
+        { key: 'malfunction', label: 'Malfunction', defaultOn: false, type: 'boolean' }
+      ]
+    },
+
+    DVIRLog: {
+      label: 'DVIR Logs',
+      typeName: 'DVIRLog',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'DVIR ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'driver.id', label: 'Driver', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'logType', label: 'Log Type', defaultOn: true, type: 'string' },
+        { key: 'isSafe', label: 'Is Safe', defaultOn: true, type: 'boolean' },
+        { key: 'certifiedBy.id', label: 'Certified By', defaultOn: false, type: 'id', resolve: 'user' },
+        { key: 'repairedBy.id', label: 'Repaired By', defaultOn: false, type: 'id', resolve: 'user' },
+        { key: 'certifyDate', label: 'Certify Date', defaultOn: false, type: 'date' },
+        { key: 'repairDate', label: 'Repair Date', defaultOn: false, type: 'date' }
+      ]
+    }
+  };
+
+  /** Return ordered list of category keys */
+  function getCategoryKeys() {
+    return Object.keys(categories);
+  }
+
+  /** Return category definition by key */
+  function getCategory(key) {
+    return categories[key] || null;
+  }
+
+  /** Return only the default-on fields for a category */
+  function getDefaultFields(categoryKey) {
+    var cat = categories[categoryKey];
+    if (!cat) return [];
+    return cat.fields.filter(function (f) { return f.defaultOn; });
+  }
+
+  /** Resolve a dot-path value from an object (e.g. "device.id" from row) */
+  function resolvePath(obj, path) {
+    if (!obj || !path) return undefined;
+    var parts = path.split('.');
+    var current = obj;
+    for (var i = 0; i < parts.length; i++) {
+      if (current == null) return undefined;
+      current = current[parts[i]];
+    }
+    return current;
+  }
+
+  return {
+    categories: categories,
+    getCategoryKeys: getCategoryKeys,
+    getCategory: getCategory,
+    getDefaultFields: getDefaultFields,
+    resolvePath: resolvePath
+  };
+})();
+</script>
+<script>/**
+ * cacheManager.js — Caches semi-static lookup data (devices, zones, rules, users, diagnostics)
+ * so we can resolve IDs to human-readable names without repeated API calls.
+ */
+var CacheManager = (function () {
+  'use strict';
+
+  var cache = {
+    device: {},   // id -> name
+    zone: {},     // id -> name
+    rule: {},     // id -> name
+    user: {},     // id -> display name
+    diagnostic: {} // id -> name
+  };
+
+  var loaded = false;
+
+  /**
+   * Initialize all caches using api.multiCall.
+   * @param {object} api — MyGeotab api object
+   * @returns {Promise}
+   */
+  function init(api) {
+    if (loaded) return Promise.resolve();
+
+    var calls = [
+      ['Get', { typeName: 'Device', resultsLimit: 10000, search: {} }],
+      ['Get', { typeName: 'Zone', resultsLimit: 5000, search: {} }],
+      ['Get', { typeName: 'Rule', resultsLimit: 5000, search: {} }],
+      ['Get', { typeName: 'User', resultsLimit: 5000, search: {} }]
+    ];
+
+    return new Promise(function (resolve, reject) {
+      api.multiCall(calls, function (results) {
+        try {
+          // Devices
+          var devices = results[0] || [];
+          devices.forEach(function (d) {
+            cache.device[d.id] = d.name || d.serialNumber || d.id;
+          });
+
+          // Zones
+          var zones = results[1] || [];
+          zones.forEach(function (z) {
+            cache.zone[z.id] = z.name || z.id;
+          });
+
+          // Rules
+          var rules = results[2] || [];
+          rules.forEach(function (r) {
+            cache.rule[r.id] = r.name || r.id;
+          });
+
+          // Users
+          var users = results[3] || [];
+          users.forEach(function (u) {
+            var display = '';
+            if (u.firstName || u.lastName) {
+              display = ((u.firstName || '') + ' ' + (u.lastName || '')).trim();
+            }
+            cache.user[u.id] = display || u.name || u.id;
+          });
+
+          loaded = true;
+          resolve();
+        } catch (e) {
+          reject(e);
+        }
+      }, function (err) {
+        reject(err);
+      });
+    });
+  }
+
+  /**
+   * Resolve an ID to a display name.
+   * @param {string} type — "device", "zone", "rule", "user", "diagnostic"
+   * @param {string} id
+   * @returns {string}
+   */
+  function resolve(type, id) {
+    if (!id) return '';
+    if (cache[type] && cache[type][id]) {
+      return cache[type][id];
+    }
+    // For well-known Geotab IDs, clean them up
+    if (typeof id === 'string' && id.startsWith('Diagnostic')) {
+      return id.replace(/Id$/, '').replace(/([A-Z])/g, ' $1').trim();
+    }
+    return String(id);
+  }
+
+  /** Return the devices cache for populating the device filter dropdown */
+  function getDevices() {
+    return cache.device;
+  }
+
+  /** Return all cached users */
+  function getUsers() {
+    return cache.user;
+  }
+
+  /** Check if caches are loaded */
+  function isLoaded() {
+    return loaded;
+  }
+
+  /** Store a diagnostic name into the cache */
+  function cacheDiagnostic(id, name) {
+    cache.diagnostic[id] = name;
+  }
+
+  return {
+    init: init,
+    resolve: resolve,
+    getDevices: getDevices,
+    getUsers: getUsers,
+    isLoaded: isLoaded,
+    cacheDiagnostic: cacheDiagnostic
+  };
+})();
+</script>
+<script>/**
+ * queryEngine.js — Builds and executes API queries via api.multiCall().
+ * Handles batching, date range injection, device filtering, and results limiting.
+ */
+var QueryEngine = (function () {
+  'use strict';
+
+  /**
+   * Run queries for all selected categories.
+   * @param {object} api — MyGeotab api object
+   * @param {object} opts
+   *   opts.categories  — array of category keys (e.g. ["Trip", "Device"])
+   *   opts.fromDate    — ISO date string
+   *   opts.toDate      — ISO date string
+   *   opts.deviceId    — optional specific device ID
+   *   opts.resultsLimit — max results per category
+   *   opts.diagnosticId — optional diagnostic ID for StatusData
+   * @param {function} onProgress — called with (message) during execution
+   * @returns {Promise<object>} — { categoryKey: [rows], ... }
+   */
+  function runQueries(api, opts, onProgress) {
+    var calls = [];
+    var callMap = []; // maps each call index to its category key
+
+    opts.categories.forEach(function (catKey) {
+      var catDef = DataTypes.getCategory(catKey);
+      if (!catDef) return;
+
+      var search = {};
+      var limit = opts.resultsLimit || 500;
+
+      // Date range
+      if (catDef.needsDateRange) {
+        search.fromDate = opts.fromDate;
+        search.toDate = opts.toDate;
+      }
+
+      // Device filter
+      if (opts.deviceId) {
+        search.deviceSearch = { id: opts.deviceId };
+      }
+
+      // Driver-only filter for User type
+      if (catDef.isDriverOnly) {
+        search.isDriver = true;
+      }
+
+      // Diagnostic filter for StatusData
+      if (catDef.needsDiagnostic && opts.diagnosticId) {
+        search.diagnosticSearch = { id: opts.diagnosticId };
+      }
+
+      calls.push(['Get', {
+        typeName: catDef.typeName,
+        search: search,
+        resultsLimit: limit
+      }]);
+      callMap.push(catKey);
+    });
+
+    if (calls.length === 0) {
+      return Promise.resolve({});
+    }
+
+    if (onProgress) {
+      onProgress('Querying ' + calls.length + ' data type(s)...');
+    }
+
+    return new Promise(function (resolve, reject) {
+      api.multiCall(calls, function (results) {
+        var data = {};
+        for (var i = 0; i < callMap.length; i++) {
+          data[callMap[i]] = results[i] || [];
+        }
+        if (onProgress) {
+          var total = 0;
+          Object.keys(data).forEach(function (k) { total += data[k].length; });
+          onProgress('Retrieved ' + total + ' total records.');
+        }
+        resolve(data);
+      }, function (err) {
+        reject(err);
+      });
+    });
+  }
+
+  return {
+    runQueries: runQueries
+  };
+})();
+</script>
+<script>/**
+ * tableRenderer.js — Renders sortable, paginated, filterable data tables.
+ */
+var TableRenderer = (function () {
+  'use strict';
+
+  var currentOpts = null;
+  var currentPage = 0;
+  var sortCol = -1;
+  var sortDir = 'asc'; // 'asc' | 'desc'
+  var filteredRows = [];
+  var filterQuery = '';
+
+  /**
+   * Render a data table.
+   * @param {object} opts
+   *   opts.containerId   — DOM id for table container
+   *   opts.paginationId  — DOM id for pagination wrapper
+   *   opts.pageInfoId    — DOM id for page info text
+   *   opts.prevBtnId     — DOM id for prev button
+   *   opts.nextBtnId     — DOM id for next button
+   *   opts.fields        — array of field definitions
+   *   opts.rows          — array of data objects
+   *   opts.pageSize      — rows per page (default 50)
+   */
+  function render(opts) {
+    currentOpts = opts;
+    currentPage = 0;
+    sortCol = -1;
+    sortDir = 'asc';
+    filterQuery = '';
+    filteredRows = opts.rows.slice();
+    drawTable();
+  }
+
+  function drawTable() {
+    var opts = currentOpts;
+    if (!opts) return;
+
+    var container = document.getElementById(opts.containerId);
+    var fields = opts.fields;
+    var pageSize = opts.pageSize || 50;
+
+    if (filteredRows.length === 0) {
+      container.innerHTML = '<div class="fdr-no-data">No data found.</div>';
+      updatePagination(0, 0, 0);
+      return;
+    }
+
+    var totalPages = Math.ceil(filteredRows.length / pageSize);
+    if (currentPage >= totalPages) currentPage = totalPages - 1;
+    if (currentPage < 0) currentPage = 0;
+
+    var start = currentPage * pageSize;
+    var end = Math.min(start + pageSize, filteredRows.length);
+    var pageRows = filteredRows.slice(start, end);
+
+    // Build table HTML
+    var html = '<div class="fdr-table-wrap"><table class="fdr-table"><thead><tr>';
+
+    fields.forEach(function (f, idx) {
+      var arrowClass = '';
+      if (idx === sortCol) {
+        arrowClass = sortDir;
+      }
+      html += '<th data-col="' + idx + '">' +
+        escapeHtml(f.label) +
+        '<span class="sort-arrow ' + arrowClass + '"></span></th>';
+    });
+
+    html += '</tr></thead><tbody>';
+
+    pageRows.forEach(function (row) {
+      html += '<tr>';
+      fields.forEach(function (f) {
+        var val = DataTypes.resolvePath(row, f.key);
+        var display = formatValue(val, f);
+        html += '<td title="' + escapeHtml(display) + '">' + escapeHtml(display) + '</td>';
+      });
+      html += '</tr>';
+    });
+
+    html += '</tbody></table></div>';
+    container.innerHTML = html;
+
+    // Bind header sort clicks
+    var headers = container.querySelectorAll('th[data-col]');
+    headers.forEach(function (th) {
+      th.addEventListener('click', function () {
+        var col = parseInt(th.dataset.col, 10);
+        onSort(col);
+      });
+    });
+
+    updatePagination(start + 1, end, filteredRows.length);
+  }
+
+  function onSort(colIndex) {
+    if (sortCol === colIndex) {
+      sortDir = (sortDir === 'asc') ? 'desc' : 'asc';
+    } else {
+      sortCol = colIndex;
+      sortDir = 'asc';
+    }
+
+    var field = currentOpts.fields[colIndex];
+    filteredRows.sort(function (a, b) {
+      var va = DataTypes.resolvePath(a, field.key);
+      var vb = DataTypes.resolvePath(b, field.key);
+      return compareValues(va, vb, field.type, sortDir);
+    });
+
+    currentPage = 0;
+    drawTable();
+  }
+
+  function compareValues(a, b, type, dir) {
+    // Handle nulls
+    if (a == null && b == null) return 0;
+    if (a == null) return 1;
+    if (b == null) return -1;
+
+    var result = 0;
+    if (type === 'number' || type === 'duration') {
+      result = (Number(a) || 0) - (Number(b) || 0);
+    } else if (type === 'date') {
+      result = new Date(a) - new Date(b);
+    } else {
+      result = String(a).localeCompare(String(b));
+    }
+
+    return dir === 'desc' ? -result : result;
+  }
+
+  function formatValue(val, field) {
+    if (val == null || val === '') return '';
+
+    // Resolve IDs through cache
+    if (field.resolve) {
+      return CacheManager.resolve(field.resolve, val);
+    }
+
+    switch (field.type) {
+      case 'date':
+        try {
+          var d = new Date(val);
+          if (isNaN(d.getTime())) return String(val);
+          return d.toLocaleString();
+        } catch (e) {
+          return String(val);
+        }
+      case 'number':
+        if (typeof val === 'number') {
+          return val % 1 === 0 ? String(val) : val.toFixed(2);
+        }
+        return String(val);
+      case 'duration':
+        return formatDuration(val);
+      case 'boolean':
+        return val ? 'Yes' : 'No';
+      default:
+        // Handle arrays (e.g. zoneTypes)
+        if (Array.isArray(val)) {
+          return val.map(function (v) {
+            return typeof v === 'object' ? (v.name || v.id || JSON.stringify(v)) : String(v);
+          }).join(', ');
+        }
+        if (typeof val === 'object') {
+          return val.name || val.id || JSON.stringify(val);
+        }
+        return String(val);
+    }
+  }
+
+  function formatDuration(val) {
+    if (typeof val === 'string') {
+      // ISO 8601 duration or .NET TimeSpan format
+      var match = val.match(/PT?(\d+H)?(\d+M)?(\d+\.?\d*S)?/i);
+      if (match) {
+        var h = parseInt(match[1]) || 0;
+        var m = parseInt(match[2]) || 0;
+        var s = parseFloat(match[3]) || 0;
+        return h + 'h ' + m + 'm ' + Math.round(s) + 's';
+      }
+      // Try .NET TimeSpan: d.hh:mm:ss
+      var tsMatch = val.match(/(?:(\d+)\.)?(\d+):(\d+):(\d+)/);
+      if (tsMatch) {
+        var days = parseInt(tsMatch[1]) || 0;
+        return (days > 0 ? days + 'd ' : '') +
+          tsMatch[2] + 'h ' + tsMatch[3] + 'm ' + tsMatch[4] + 's';
+      }
+      return val;
+    }
+    if (typeof val === 'number') {
+      // Assume seconds
+      var hrs = Math.floor(val / 3600);
+      var mins = Math.floor((val % 3600) / 60);
+      var secs = Math.round(val % 60);
+      return hrs + 'h ' + mins + 'm ' + secs + 's';
+    }
+    return String(val);
+  }
+
+  /** Filter rows by search query */
+  function filter(query) {
+    filterQuery = (query || '').toLowerCase().trim();
+    if (!currentOpts) return;
+
+    if (!filterQuery) {
+      filteredRows = currentOpts.rows.slice();
+    } else {
+      filteredRows = currentOpts.rows.filter(function (row) {
+        return currentOpts.fields.some(function (f) {
+          var val = DataTypes.resolvePath(row, f.key);
+          var display = formatValue(val, f);
+          return display.toLowerCase().indexOf(filterQuery) >= 0;
+        });
+      });
+    }
+
+    // Re-apply sort if active
+    if (sortCol >= 0 && currentOpts.fields[sortCol]) {
+      var field = currentOpts.fields[sortCol];
+      filteredRows.sort(function (a, b) {
+        var va = DataTypes.resolvePath(a, field.key);
+        var vb = DataTypes.resolvePath(b, field.key);
+        return compareValues(va, vb, field.type, sortDir);
+      });
+    }
+
+    currentPage = 0;
+    drawTable();
+  }
+
+  function nextPage() {
+    if (!currentOpts) return;
+    var pageSize = currentOpts.pageSize || 50;
+    var totalPages = Math.ceil(filteredRows.length / pageSize);
+    if (currentPage < totalPages - 1) {
+      currentPage++;
+      drawTable();
+    }
+  }
+
+  function prevPage() {
+    if (currentPage > 0) {
+      currentPage--;
+      drawTable();
+    }
+  }
+
+  function updatePagination(start, end, total) {
+    if (!currentOpts) return;
+    var info = document.getElementById(currentOpts.pageInfoId);
+    var prev = document.getElementById(currentOpts.prevBtnId);
+    var next = document.getElementById(currentOpts.nextBtnId);
+
+    if (total === 0) {
+      info.textContent = 'No results';
+      prev.disabled = true;
+      next.disabled = true;
+      return;
+    }
+
+    info.textContent = 'Showing ' + start + ' - ' + end + ' of ' + total;
+    prev.disabled = currentPage === 0;
+
+    var pageSize = currentOpts.pageSize || 50;
+    var totalPages = Math.ceil(total / pageSize);
+    next.disabled = currentPage >= totalPages - 1;
+  }
+
+  /** Get the currently filtered rows (for CSV export) */
+  function getFilteredRows() {
+    return filteredRows;
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  return {
+    render: render,
+    filter: filter,
+    nextPage: nextPage,
+    prevPage: prevPage,
+    getFilteredRows: getFilteredRows,
+    formatValue: formatValue
+  };
+})();
+</script>
+<script>/**
+ * csvExporter.js — Exports table data as CSV with UTF-8 BOM for Excel compatibility.
+ */
+var CsvExporter = (function () {
+  'use strict';
+
+  /**
+   * Export data as a CSV file download.
+   * @param {Array} fields — field definitions (same as table columns)
+   * @param {Array} rows — data rows
+   * @param {string} filenameBase — base name for the file
+   */
+  function exportCsv(fields, rows, filenameBase) {
+    if (!fields || fields.length === 0 || !rows) return;
+
+    // Use filtered rows from the table if available
+    var exportRows = TableRenderer.getFilteredRows();
+    if (!exportRows || exportRows.length === 0) {
+      exportRows = rows;
+    }
+
+    var lines = [];
+
+    // Header row
+    var header = fields.map(function (f) {
+      return csvEscape(f.label);
+    });
+    lines.push(header.join(','));
+
+    // Data rows
+    exportRows.forEach(function (row) {
+      var cells = fields.map(function (f) {
+        var val = DataTypes.resolvePath(row, f.key);
+        var display = TableRenderer.formatValue(val, f);
+        return csvEscape(display);
+      });
+      lines.push(cells.join(','));
+    });
+
+    var csvContent = lines.join('\r\n');
+
+    // UTF-8 BOM for Excel
+    var bom = '\uFEFF';
+    var blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+    // Generate filename with timestamp
+    var now = new Date();
+    var ts = now.getFullYear() +
+      String(now.getMonth() + 1).padStart(2, '0') +
+      String(now.getDate()).padStart(2, '0') + '_' +
+      String(now.getHours()).padStart(2, '0') +
+      String(now.getMinutes()).padStart(2, '0');
+
+    var filename = (filenameBase || 'export').replace(/[^a-zA-Z0-9_-]/g, '_') + '_' + ts + '.csv';
+
+    // Trigger download
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+
+    // Cleanup
+    setTimeout(function () {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
+
+  function csvEscape(val) {
+    if (val == null) return '';
+    var str = String(val);
+    // Wrap in quotes if it contains comma, quote, or newline
+    if (str.indexOf(',') >= 0 || str.indexOf('"') >= 0 || str.indexOf('\n') >= 0 || str.indexOf('\r') >= 0) {
+      return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
+  }
+
+  return {
+    exportCsv: exportCsv
+  };
+})();
+</script>
+<script>/**
+ * chartRenderer.js — Canvas-based bar, line, and pie charts. No external libraries.
+ */
+var ChartRenderer = (function () {
+  'use strict';
+
+  // Color palette
+  var COLORS = [
+    '#005f9e', '#28a745', '#fd7e14', '#dc3545', '#6f42c1',
+    '#17a2b8', '#e83e8c', '#20c997', '#ffc107', '#6c757d',
+    '#0056b3', '#1e7e34', '#d63384', '#0dcaf0', '#198754',
+    '#6610f2', '#d63384', '#f8f9fa', '#495057', '#adb5bd'
+  ];
+
+  /**
+   * Render a chart on a canvas element.
+   * @param {object} opts
+   *   opts.canvasId       — DOM id of the canvas
+   *   opts.chartType      — "bar" | "line" | "pie"
+   *   opts.rows           — data rows
+   *   opts.valueFieldKey  — dot-path to numeric value
+   *   opts.groupFieldKey  — dot-path to group-by value
+   *   opts.groupFieldDef  — field definition for group field (for resolving)
+   *   opts.maxGroups      — max number of groups to show (default 20)
+   */
+  function render(opts) {
+    var canvas = document.getElementById(opts.canvasId);
+    if (!canvas) return;
+
+    var ctx = canvas.getContext('2d');
+    var container = canvas.parentElement;
+
+    // Set canvas size to match container
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+
+    // Aggregate data: group -> sum of values
+    var groups = {};
+    var maxGroups = opts.maxGroups || 20;
+
+    opts.rows.forEach(function (row) {
+      var rawGroup = DataTypes.resolvePath(row, opts.groupFieldKey);
+      var groupLabel;
+
+      if (opts.groupFieldDef && opts.groupFieldDef.resolve) {
+        groupLabel = CacheManager.resolve(opts.groupFieldDef.resolve, rawGroup);
+      } else if (opts.groupFieldDef && opts.groupFieldDef.type === 'date') {
+        try {
+          var d = new Date(rawGroup);
+          groupLabel = d.toLocaleDateString();
+        } catch (e) {
+          groupLabel = String(rawGroup || '(empty)');
+        }
+      } else {
+        groupLabel = String(rawGroup || '(empty)');
+      }
+
+      var val = DataTypes.resolvePath(row, opts.valueFieldKey);
+      var num = parseFloat(val) || 0;
+
+      if (!groups[groupLabel]) {
+        groups[groupLabel] = { sum: 0, count: 0 };
+      }
+      groups[groupLabel].sum += num;
+      groups[groupLabel].count += 1;
+    });
+
+    // Sort by sum descending, limit groups
+    var sorted = Object.keys(groups).map(function (label) {
+      return { label: label, sum: groups[label].sum, count: groups[label].count };
+    });
+    sorted.sort(function (a, b) { return b.sum - a.sum; });
+
+    if (sorted.length > maxGroups) {
+      var others = sorted.slice(maxGroups).reduce(function (acc, g) {
+        return { label: 'Others', sum: acc.sum + g.sum, count: acc.count + g.count };
+      }, { label: 'Others', sum: 0, count: 0 });
+      sorted = sorted.slice(0, maxGroups);
+      sorted.push(others);
+    }
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (sorted.length === 0) {
+      ctx.fillStyle = '#868e96';
+      ctx.font = '14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('No data to chart.', canvas.width / 2, canvas.height / 2);
+      return;
+    }
+
+    switch (opts.chartType) {
+      case 'bar':
+        drawBarChart(ctx, canvas, sorted);
+        break;
+      case 'line':
+        drawLineChart(ctx, canvas, sorted);
+        break;
+      case 'pie':
+        drawPieChart(ctx, canvas, sorted);
+        break;
+    }
+  }
+
+  // ---- Bar Chart ----
+  function drawBarChart(ctx, canvas, data) {
+    var w = canvas.width;
+    var h = canvas.height;
+    var padding = { top: 30, right: 20, bottom: 80, left: 70 };
+    var chartW = w - padding.left - padding.right;
+    var chartH = h - padding.top - padding.bottom;
+
+    var maxVal = Math.max.apply(null, data.map(function (d) { return d.sum; }));
+    if (maxVal === 0) maxVal = 1;
+
+    var barWidth = Math.max(10, (chartW / data.length) - 4);
+    var gap = (chartW - barWidth * data.length) / (data.length + 1);
+
+    // Y axis
+    ctx.strokeStyle = '#dee2e6';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = '#495057';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'right';
+
+    var yTicks = 5;
+    for (var i = 0; i <= yTicks; i++) {
+      var yVal = (maxVal / yTicks) * i;
+      var yPos = padding.top + chartH - (chartH * (yVal / maxVal));
+      ctx.beginPath();
+      ctx.moveTo(padding.left, yPos);
+      ctx.lineTo(w - padding.right, yPos);
+      ctx.stroke();
+      ctx.fillText(formatNumber(yVal), padding.left - 8, yPos + 4);
+    }
+
+    // Bars
+    data.forEach(function (d, idx) {
+      var x = padding.left + gap + idx * (barWidth + gap);
+      var barH = (d.sum / maxVal) * chartH;
+      var y = padding.top + chartH - barH;
+
+      ctx.fillStyle = COLORS[idx % COLORS.length];
+      ctx.fillRect(x, y, barWidth, barH);
+
+      // Value label on top
+      ctx.fillStyle = '#343a40';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(formatNumber(d.sum), x + barWidth / 2, y - 4);
+
+      // X label
+      ctx.save();
+      ctx.translate(x + barWidth / 2, padding.top + chartH + 10);
+      ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = '#495057';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
+      var label = truncateLabel(d.label, 18);
+      ctx.fillText(label, 0, 0);
+      ctx.restore();
+    });
+  }
+
+  // ---- Line Chart ----
+  function drawLineChart(ctx, canvas, data) {
+    var w = canvas.width;
+    var h = canvas.height;
+    var padding = { top: 30, right: 20, bottom: 80, left: 70 };
+    var chartW = w - padding.left - padding.right;
+    var chartH = h - padding.top - padding.bottom;
+
+    var maxVal = Math.max.apply(null, data.map(function (d) { return d.sum; }));
+    if (maxVal === 0) maxVal = 1;
+
+    // Grid
+    ctx.strokeStyle = '#dee2e6';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = '#495057';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'right';
+
+    var yTicks = 5;
+    for (var i = 0; i <= yTicks; i++) {
+      var yVal = (maxVal / yTicks) * i;
+      var yPos = padding.top + chartH - (chartH * (yVal / maxVal));
+      ctx.beginPath();
+      ctx.moveTo(padding.left, yPos);
+      ctx.lineTo(w - padding.right, yPos);
+      ctx.stroke();
+      ctx.fillText(formatNumber(yVal), padding.left - 8, yPos + 4);
+    }
+
+    // Line
+    var step = data.length > 1 ? chartW / (data.length - 1) : chartW / 2;
+
+    ctx.beginPath();
+    ctx.strokeStyle = COLORS[0];
+    ctx.lineWidth = 2;
+
+    data.forEach(function (d, idx) {
+      var x = padding.left + idx * step;
+      var y = padding.top + chartH - (d.sum / maxVal) * chartH;
+      if (idx === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+
+    // Points + labels
+    data.forEach(function (d, idx) {
+      var x = padding.left + idx * step;
+      var y = padding.top + chartH - (d.sum / maxVal) * chartH;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = COLORS[0];
+      ctx.fill();
+
+      // X label
+      ctx.save();
+      ctx.translate(x, padding.top + chartH + 10);
+      ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = '#495057';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(truncateLabel(d.label, 18), 0, 0);
+      ctx.restore();
+    });
+  }
+
+  // ---- Pie Chart ----
+  function drawPieChart(ctx, canvas, data) {
+    var w = canvas.width;
+    var h = canvas.height;
+    var cx = w * 0.4;
+    var cy = h / 2;
+    var radius = Math.min(cx - 40, cy - 40);
+    if (radius < 30) radius = 30;
+
+    var total = data.reduce(function (acc, d) { return acc + d.sum; }, 0);
+    if (total === 0) {
+      ctx.fillStyle = '#868e96';
+      ctx.font = '14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('No data to chart.', w / 2, h / 2);
+      return;
+    }
+
+    var startAngle = -Math.PI / 2;
+
+    data.forEach(function (d, idx) {
+      var slice = (d.sum / total) * Math.PI * 2;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, radius, startAngle, startAngle + slice);
+      ctx.closePath();
+      ctx.fillStyle = COLORS[idx % COLORS.length];
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      startAngle += slice;
+    });
+
+    // Legend
+    var legendX = w * 0.65;
+    var legendY = 30;
+    var legendRowH = 20;
+
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'left';
+
+    data.forEach(function (d, idx) {
+      var y = legendY + idx * legendRowH;
+      if (y + legendRowH > h) return; // overflow protection
+
+      ctx.fillStyle = COLORS[idx % COLORS.length];
+      ctx.fillRect(legendX, y, 12, 12);
+
+      ctx.fillStyle = '#343a40';
+      var pct = total > 0 ? ((d.sum / total) * 100).toFixed(1) : '0';
+      var text = truncateLabel(d.label, 16) + ' (' + pct + '%)';
+      ctx.fillText(text, legendX + 18, y + 10);
+    });
+  }
+
+  // ---- Helpers ----
+  function formatNumber(n) {
+    if (Math.abs(n) >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+    if (Math.abs(n) >= 1000) return (n / 1000).toFixed(1) + 'K';
+    return n % 1 === 0 ? String(n) : n.toFixed(1);
+  }
+
+  function truncateLabel(str, max) {
+    if (!str) return '';
+    if (str.length <= max) return str;
+    return str.substring(0, max - 1) + '\u2026';
+  }
+
+  return {
+    render: render
+  };
+})();
+</script>
+<script>/**
+ * main.js — Add-in entry point and lifecycle.
+ * MyGeotab calls the global `geotab.addin.flexibleDataReporter` hooks.
+ */
+(function () {
+  'use strict';
+
+  // State
+  var state = {
+    api: null,
+    page: null,
+    selectedCategories: [],
+    selectedFields: {},    // { categoryKey: [field objects] }
+    results: {},           // { categoryKey: [rows] }
+    activeTab: null,
+    chartVisible: false
+  };
+
+  // ---- Lifecycle hooks expected by MyGeotab ----
+
+  if (!window.geotab) window.geotab = {};
+  if (!window.geotab.addin) window.geotab.addin = {};
+
+  window.geotab.addin.flexibleDataReporter = {
+    initialize: function (api, page, callback) {
+      state.api = api;
+      state.page = page;
+
+      initUI();
+
+      // Load caches then populate device dropdown
+      setStatus('Loading fleet data...');
+      CacheManager.init(api)
+        .then(function () {
+          populateDeviceDropdown();
+          setStatus('');
+          callback();
+        })
+        .catch(function (err) {
+          setStatus('Cache load error: ' + (err.message || err), true);
+          callback();
+        });
+    },
+
+    focus: function (api, page) {
+      state.api = api;
+      state.page = page;
+    },
+
+    blur: function () {
+      // Nothing to clean up
+    }
+  };
+
+  // ---- UI Initialization ----
+
+  function initUI() {
+    buildCategoryCheckboxes();
+    setDefaultDates();
+    bindEvents();
+  }
+
+  function buildCategoryCheckboxes() {
+    var container = document.getElementById('fdrCategoryChecks');
+    container.innerHTML = '';
+
+    DataTypes.getCategoryKeys().forEach(function (key) {
+      var cat = DataTypes.getCategory(key);
+      var label = document.createElement('label');
+
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = key;
+      cb.addEventListener('change', onCategoryToggle);
+
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(cat.label));
+      container.appendChild(label);
+    });
+  }
+
+  function setDefaultDates() {
+    var now = new Date();
+    var weekAgo = new Date(now);
+    weekAgo.setDate(weekAgo.getDate() - 7);
+
+    document.getElementById('fdrDateTo').value = formatDateInput(now);
+    document.getElementById('fdrDateFrom').value = formatDateInput(weekAgo);
+  }
+
+  function formatDateInput(d) {
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
+  function populateDeviceDropdown() {
+    var select = document.getElementById('fdrDeviceSelect');
+    var devices = CacheManager.getDevices();
+    var ids = Object.keys(devices);
+    ids.sort(function (a, b) {
+      return (devices[a] || '').localeCompare(devices[b] || '');
+    });
+
+    ids.forEach(function (id) {
+      var opt = document.createElement('option');
+      opt.value = id;
+      opt.textContent = devices[id];
+      select.appendChild(opt);
+    });
+  }
+
+  // ---- Event Binding ----
+
+  function bindEvents() {
+    document.getElementById('fdrRunBtn').addEventListener('click', runReport);
+    document.getElementById('fdrExportCsvBtn').addEventListener('click', exportCurrentTab);
+    document.getElementById('fdrToggleChartBtn').addEventListener('click', toggleChart);
+    document.getElementById('fdrHideChartBtn').addEventListener('click', hideChart);
+    document.getElementById('fdrRenderChartBtn').addEventListener('click', renderChart);
+    document.getElementById('fdrSearch').addEventListener('input', onSearchInput);
+    document.getElementById('fdrPrevBtn').addEventListener('click', function () { TableRenderer.prevPage(); });
+    document.getElementById('fdrNextBtn').addEventListener('click', function () { TableRenderer.nextPage(); });
+  }
+
+  // ---- Category Toggle & Column Pickers ----
+
+  function onCategoryToggle() {
+    state.selectedCategories = [];
+    var checks = document.querySelectorAll('#fdrCategoryChecks input[type=checkbox]');
+    checks.forEach(function (cb) {
+      if (cb.checked) state.selectedCategories.push(cb.value);
+    });
+
+    buildColumnPickers();
+    updateDiagnosticPicker();
+  }
+
+  function buildColumnPickers() {
+    var container = document.getElementById('fdrColumnPickers');
+    container.innerHTML = '';
+    state.selectedFields = {};
+
+    state.selectedCategories.forEach(function (catKey) {
+      var cat = DataTypes.getCategory(catKey);
+      if (!cat) return;
+
+      state.selectedFields[catKey] = cat.fields.filter(function (f) { return f.defaultOn; });
+
+      var group = document.createElement('div');
+      group.className = 'fdr-column-group';
+
+      var title = document.createElement('div');
+      title.className = 'fdr-column-group-title';
+      title.textContent = cat.label + ' — Columns';
+      group.appendChild(title);
+
+      var cols = document.createElement('div');
+      cols.className = 'fdr-columns';
+
+      cat.fields.forEach(function (field) {
+        var lbl = document.createElement('label');
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = field.defaultOn;
+        cb.dataset.category = catKey;
+        cb.dataset.fieldKey = field.key;
+        cb.addEventListener('change', function () {
+          updateSelectedFields(catKey, cat.fields);
+        });
+
+        lbl.appendChild(cb);
+        lbl.appendChild(document.createTextNode(field.label));
+        cols.appendChild(lbl);
+      });
+
+      group.appendChild(cols);
+      container.appendChild(group);
+    });
+  }
+
+  function updateSelectedFields(catKey, allFields) {
+    var checked = [];
+    var boxes = document.querySelectorAll(
+      '#fdrColumnPickers input[data-category="' + catKey + '"]'
+    );
+    boxes.forEach(function (cb) {
+      if (cb.checked) {
+        var match = allFields.find(function (f) { return f.key === cb.dataset.fieldKey; });
+        if (match) checked.push(match);
+      }
+    });
+    state.selectedFields[catKey] = checked;
+  }
+
+  function updateDiagnosticPicker() {
+    var picker = document.getElementById('fdrDiagnosticPicker');
+    if (state.selectedCategories.indexOf('StatusData') >= 0) {
+      picker.classList.add('visible');
+    } else {
+      picker.classList.remove('visible');
+    }
+  }
+
+  // ---- Run Report ----
+
+  function runReport() {
+    if (state.selectedCategories.length === 0) {
+      setStatus('Select at least one data category.', true);
+      return;
+    }
+
+    // Validate StatusData needs a diagnostic
+    if (state.selectedCategories.indexOf('StatusData') >= 0) {
+      var diagId = document.getElementById('fdrDiagnosticSelect').value;
+      if (!diagId) {
+        setStatus('Please select a diagnostic for Engine/Status Data.', true);
+        return;
+      }
+    }
+
+    var fromDate = document.getElementById('fdrDateFrom').value;
+    var toDate = document.getElementById('fdrDateTo').value;
+    var deviceId = document.getElementById('fdrDeviceSelect').value || null;
+    var limit = parseInt(document.getElementById('fdrResultsLimit').value, 10) || 500;
+    if (limit > 50000) limit = 50000;
+
+    var runBtn = document.getElementById('fdrRunBtn');
+    runBtn.disabled = true;
+    setStatus('<span class="fdr-spinner"></span>Running report...', false, true);
+
+    QueryEngine.runQueries(state.api, {
+      categories: state.selectedCategories,
+      fromDate: fromDate,
+      toDate: toDate,
+      deviceId: deviceId,
+      resultsLimit: limit,
+      diagnosticId: document.getElementById('fdrDiagnosticSelect').value || null
+    }, function (msg) {
+      setStatus('<span class="fdr-spinner"></span>' + msg, false, true);
+    })
+    .then(function (results) {
+      state.results = results;
+      runBtn.disabled = false;
+
+      var total = 0;
+      Object.keys(results).forEach(function (k) { total += results[k].length; });
+
+      if (total === 0) {
+        setStatus('No data found for the selected criteria.', true);
+        document.getElementById('fdrResultsPanel').classList.remove('visible');
+        return;
+      }
+
+      setStatus('Done — ' + total + ' records loaded.');
+      showResults();
+    })
+    .catch(function (err) {
+      runBtn.disabled = false;
+      setStatus('Error: ' + (err.message || err), true);
+    });
+  }
+
+  // ---- Results Display ----
+
+  function showResults() {
+    var panel = document.getElementById('fdrResultsPanel');
+    panel.classList.add('visible');
+
+    buildTabs();
+
+    // Activate first tab
+    var firstCat = state.selectedCategories[0];
+    activateTab(firstCat);
+  }
+
+  function buildTabs() {
+    var container = document.getElementById('fdrTabs');
+    container.innerHTML = '';
+
+    state.selectedCategories.forEach(function (catKey) {
+      var cat = DataTypes.getCategory(catKey);
+      var count = (state.results[catKey] || []).length;
+
+      var btn = document.createElement('button');
+      btn.className = 'fdr-tab';
+      btn.dataset.category = catKey;
+      btn.innerHTML = cat.label + '<span class="fdr-tab-count">(' + count + ')</span>';
+      btn.addEventListener('click', function () { activateTab(catKey); });
+      container.appendChild(btn);
+    });
+  }
+
+  function activateTab(catKey) {
+    state.activeTab = catKey;
+
+    // Highlight active tab
+    var tabs = document.querySelectorAll('#fdrTabs .fdr-tab');
+    tabs.forEach(function (t) {
+      t.classList.toggle('active', t.dataset.category === catKey);
+    });
+
+    // Clear search
+    document.getElementById('fdrSearch').value = '';
+
+    // Render table
+    var fields = state.selectedFields[catKey] || DataTypes.getDefaultFields(catKey);
+    var rows = state.results[catKey] || [];
+
+    TableRenderer.render({
+      containerId: 'fdrTableContainer',
+      paginationId: 'fdrPagination',
+      pageInfoId: 'fdrPageInfo',
+      prevBtnId: 'fdrPrevBtn',
+      nextBtnId: 'fdrNextBtn',
+      fields: fields,
+      rows: rows,
+      pageSize: 50
+    });
+
+    // Update chart field dropdowns
+    updateChartFieldOptions(catKey, fields);
+  }
+
+  // ---- Search ----
+
+  function onSearchInput() {
+    var query = document.getElementById('fdrSearch').value;
+    TableRenderer.filter(query);
+  }
+
+  // ---- CSV Export ----
+
+  function exportCurrentTab() {
+    if (!state.activeTab) return;
+    var fields = state.selectedFields[state.activeTab] || DataTypes.getDefaultFields(state.activeTab);
+    var rows = state.results[state.activeTab] || [];
+    var cat = DataTypes.getCategory(state.activeTab);
+    CsvExporter.exportCsv(fields, rows, (cat ? cat.label : 'export'));
+  }
+
+  // ---- Chart ----
+
+  function toggleChart() {
+    var panel = document.getElementById('fdrChartPanel');
+    state.chartVisible = !state.chartVisible;
+    panel.classList.toggle('visible', state.chartVisible);
+    document.getElementById('fdrToggleChartBtn').textContent =
+      state.chartVisible ? 'Hide Chart' : 'Show Chart';
+  }
+
+  function hideChart() {
+    state.chartVisible = false;
+    document.getElementById('fdrChartPanel').classList.remove('visible');
+    document.getElementById('fdrToggleChartBtn').textContent = 'Show Chart';
+  }
+
+  function updateChartFieldOptions(catKey, fields) {
+    var valueSelect = document.getElementById('fdrChartValueField');
+    var groupSelect = document.getElementById('fdrChartGroupField');
+
+    valueSelect.innerHTML = '';
+    groupSelect.innerHTML = '';
+
+    fields.forEach(function (f) {
+      if (f.type === 'number') {
+        var opt = document.createElement('option');
+        opt.value = f.key;
+        opt.textContent = f.label;
+        valueSelect.appendChild(opt);
+      }
+    });
+
+    fields.forEach(function (f) {
+      if (f.type === 'string' || f.type === 'id' || f.type === 'date') {
+        var opt = document.createElement('option');
+        opt.value = f.key;
+        opt.textContent = f.label;
+        groupSelect.appendChild(opt);
+      }
+    });
+  }
+
+  function renderChart() {
+    if (!state.activeTab) return;
+
+    var chartType = document.getElementById('fdrChartType').value;
+    var valueField = document.getElementById('fdrChartValueField').value;
+    var groupField = document.getElementById('fdrChartGroupField').value;
+
+    if (!valueField || !groupField) {
+      setStatus('Select both a value field and group-by field for charting.', true);
+      return;
+    }
+
+    var rows = state.results[state.activeTab] || [];
+    var fields = state.selectedFields[state.activeTab] || [];
+    var groupFieldDef = fields.find(function (f) { return f.key === groupField; });
+
+    ChartRenderer.render({
+      canvasId: 'fdrCanvas',
+      chartType: chartType,
+      rows: rows,
+      valueFieldKey: valueField,
+      groupFieldKey: groupField,
+      groupFieldDef: groupFieldDef,
+      maxGroups: 20
+    });
+  }
+
+  // ---- Status Helpers ----
+
+  function setStatus(msg, isError, isHtml) {
+    var el = document.getElementById('fdrStatus');
+    if (isHtml) {
+      el.innerHTML = msg;
+    } else {
+      el.textContent = msg;
+    }
+    el.className = 'fdr-status' + (isError ? ' error' : '');
+  }
+
+})();
+</script>
+
+</body>
+</html>
