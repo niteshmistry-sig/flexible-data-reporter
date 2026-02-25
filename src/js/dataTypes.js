@@ -204,8 +204,138 @@ var DataTypes = (function () {
         { key: 'certifyDate', label: 'Certify Date', defaultOn: false, type: 'date' },
         { key: 'repairDate', label: 'Repair Date', defaultOn: false, type: 'date' }
       ]
+    },
+
+    FuelTransaction: {
+      label: 'Fuel Transactions',
+      typeName: 'FuelTransaction',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Transaction ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'driver.id', label: 'Driver', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'volume', label: 'Volume (L)', defaultOn: true, type: 'number' },
+        { key: 'cost', label: 'Cost', defaultOn: true, type: 'number' },
+        { key: 'currencyCode', label: 'Currency', defaultOn: false, type: 'string' },
+        { key: 'odometer', label: 'Odometer (km)', defaultOn: true, type: 'number' },
+        { key: 'productType', label: 'Product Type', defaultOn: true, type: 'string' },
+        { key: 'siteName', label: 'Site Name', defaultOn: true, type: 'string' },
+        { key: 'sourceData', label: 'Source', defaultOn: false, type: 'string' },
+        { key: 'serialNumber', label: 'Card Number', defaultOn: false, type: 'string' },
+        { key: 'description', label: 'Description', defaultOn: false, type: 'string' }
+      ]
+    },
+
+    TextMessage: {
+      label: 'Text Messages',
+      typeName: 'TextMessage',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Message ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'user.id', label: 'User', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'sent', label: 'Sent', defaultOn: true, type: 'date' },
+        { key: 'delivered', label: 'Delivered', defaultOn: false, type: 'date' },
+        { key: 'read', label: 'Read', defaultOn: false, type: 'date' },
+        { key: 'isDirectionToVehicle', label: 'To Vehicle', defaultOn: true, type: 'boolean' },
+        { key: 'messageContent.message', label: 'Message', defaultOn: true, type: 'string' },
+        { key: 'messageContent.contentType', label: 'Content Type', defaultOn: false, type: 'string' }
+      ]
+    },
+
+    Route: {
+      label: 'Routes',
+      typeName: 'Route',
+      needsDateRange: false,
+      fields: [
+        { key: 'id', label: 'Route ID', defaultOn: false, type: 'string' },
+        { key: 'name', label: 'Name', defaultOn: true, type: 'string' },
+        { key: 'comment', label: 'Comment', defaultOn: true, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'routeType', label: 'Route Type', defaultOn: true, type: 'string' }
+      ]
+    },
+
+    Group: {
+      label: 'Groups',
+      typeName: 'Group',
+      needsDateRange: false,
+      fields: [
+        { key: 'id', label: 'Group ID', defaultOn: false, type: 'string' },
+        { key: 'name', label: 'Name', defaultOn: true, type: 'string' },
+        { key: 'comments', label: 'Comments', defaultOn: true, type: 'string' },
+        { key: 'reference', label: 'Reference', defaultOn: false, type: 'string' },
+        { key: 'parent.id', label: 'Parent Group', defaultOn: true, type: 'string' },
+        { key: 'color.a', label: 'Color Alpha', defaultOn: false, type: 'number' },
+        { key: 'children', label: 'Children', defaultOn: false, type: 'string' }
+      ]
+    },
+
+    Trailer: {
+      label: 'Trailers',
+      typeName: 'Trailer',
+      needsDateRange: false,
+      fields: [
+        { key: 'id', label: 'Trailer ID', defaultOn: false, type: 'string' },
+        { key: 'name', label: 'Name', defaultOn: true, type: 'string' },
+        { key: 'comment', label: 'Comment', defaultOn: true, type: 'string' },
+        { key: 'activeFrom', label: 'Active From', defaultOn: true, type: 'date' },
+        { key: 'activeTo', label: 'Active To', defaultOn: false, type: 'date' }
+      ]
+    },
+
+    Audit: {
+      label: 'Audit Logs',
+      typeName: 'Audit',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Audit ID', defaultOn: false, type: 'string' },
+        { key: 'user.id', label: 'User', defaultOn: true, type: 'id', resolve: 'user' },
+        { key: 'userName', label: 'Username', defaultOn: true, type: 'string' },
+        { key: 'dateTime', label: 'Date/Time', defaultOn: true, type: 'date' },
+        { key: 'name', label: 'Event', defaultOn: true, type: 'string' },
+        { key: 'comment', label: 'Comment', defaultOn: true, type: 'string' }
+      ]
+    },
+
+    Rule: {
+      label: 'Rules',
+      typeName: 'Rule',
+      needsDateRange: false,
+      fields: [
+        { key: 'id', label: 'Rule ID', defaultOn: false, type: 'string' },
+        { key: 'name', label: 'Name', defaultOn: true, type: 'string' },
+        { key: 'comment', label: 'Comment', defaultOn: true, type: 'string' },
+        { key: 'baseType', label: 'Base Type', defaultOn: true, type: 'string' },
+        { key: 'activeFrom', label: 'Active From', defaultOn: true, type: 'date' },
+        { key: 'activeTo', label: 'Active To', defaultOn: false, type: 'date' }
+      ]
+    },
+
+    ChargeEvent: {
+      label: 'EV Charge Events',
+      typeName: 'ChargeEvent',
+      needsDateRange: true,
+      fields: [
+        { key: 'id', label: 'Event ID', defaultOn: false, type: 'string' },
+        { key: 'device.id', label: 'Device', defaultOn: true, type: 'id', resolve: 'device' },
+        { key: 'startTime', label: 'Start Time', defaultOn: true, type: 'date' },
+        { key: 'duration', label: 'Duration', defaultOn: true, type: 'duration' },
+        { key: 'startStateOfCharge', label: 'Start SoC (%)', defaultOn: true, type: 'number' },
+        { key: 'maxStateOfCharge', label: 'Max SoC (%)', defaultOn: true, type: 'number' },
+        { key: 'energyConsumedKwh', label: 'Energy (kWh)', defaultOn: true, type: 'number' },
+        { key: 'energyUsedSinceLastChargeKwh', label: 'Energy Since Last Charge (kWh)', defaultOn: false, type: 'number' },
+        { key: 'peakPowerKw', label: 'Peak Power (kW)', defaultOn: false, type: 'number' },
+        { key: 'chargeType', label: 'Charge Type', defaultOn: true, type: 'string' },
+        { key: 'chargeIsEstimated', label: 'Estimated', defaultOn: false, type: 'boolean' }
+      ]
     }
   };
+
+  /** Max categories that can be selected at once */
+  var MAX_SELECTIONS = 15;
 
   /** Return ordered list of category keys */
   function getCategoryKeys() {
@@ -238,6 +368,7 @@ var DataTypes = (function () {
 
   return {
     categories: categories,
+    MAX_SELECTIONS: MAX_SELECTIONS,
     getCategoryKeys: getCategoryKeys,
     getCategory: getCategory,
     getDefaultFields: getDefaultFields,

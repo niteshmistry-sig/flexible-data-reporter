@@ -127,11 +127,30 @@
   // ---- Category Toggle & Column Pickers ----
 
   function onCategoryToggle() {
+    var max = DataTypes.MAX_SELECTIONS;
     state.selectedCategories = [];
     var checks = document.querySelectorAll('#fdrCategoryChecks input[type=checkbox]');
     checks.forEach(function (cb) {
       if (cb.checked) state.selectedCategories.push(cb.value);
     });
+
+    // Enforce max selection limit — disable unchecked boxes when at limit
+    var atLimit = state.selectedCategories.length >= max;
+    checks.forEach(function (cb) {
+      if (!cb.checked) {
+        cb.disabled = atLimit;
+        cb.parentElement.style.opacity = atLimit ? '0.45' : '';
+        cb.parentElement.style.cursor = atLimit ? 'not-allowed' : '';
+      }
+    });
+
+    // Update counter
+    var counter = document.getElementById('fdrCategoryCounter');
+    if (counter) {
+      counter.textContent = state.selectedCategories.length + ' / ' + max + ' selected';
+      counter.style.color = atLimit ? 'var(--action-primary--default, #0078D3)' : '';
+      counter.style.fontWeight = atLimit ? '500' : '';
+    }
 
     buildColumnPickers();
     updateDiagnosticPicker();
