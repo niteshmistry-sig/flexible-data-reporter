@@ -2,14 +2,15 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Data Reporter</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400&display=swap">
   <style>/* ===================================================================
    Flexible Data Reporter — Styled with Geotab Zenith Design Tokens
    Ref: @geotab/zenith v3.5.0 — :root custom properties
    =================================================================== */
-
-/* ---- Zenith Font (Google Fonts CDN fallback since we can't bundle woff) ---- */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400&display=swap');
 
 /* ---- Zenith Design Tokens ---- */
 :root {
@@ -653,6 +654,7 @@
     </div>
 
     <!-- Filters -->
+    <div class="fdr-section-label">Filters</div>
     <div class="fdr-filters">
       <div class="fdr-filter-group">
         <label for="fdrDateFrom">From</label>

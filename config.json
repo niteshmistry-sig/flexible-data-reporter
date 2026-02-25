@@ -4,12 +4,12 @@
   "version": "1.0.0",
   "items": [
     {
-      "url": "https://niteshmistry-sig.github.io/flexible-data-reporter/index.html",
+      "url": "https://niteshmistry-sig.github.io/flexible-data-reporter/index.html?v=1772039542750",
       "path": "ActivityLink/",
       "menuName": {
         "en": "Data Reporter"
       },
-      "svgIcon": "https://niteshmistry-sig.github.io/flexible-data-reporter/images/icon.svg"
+      "svgIcon": "https://niteshmistry-sig.github.io/flexible-data-reporter/images/icon.svg?v=1772039542750"
     }
   ],
   "isSigned": false
