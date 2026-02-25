@@ -14,7 +14,7 @@ var fs = require('fs');
 var path = require('path');
 
 var SRC = path.join(__dirname, 'src');
-var DIST = path.join(__dirname, 'dist');
+var DIST = path.join(__dirname, 'docs');
 var OUT = path.join(__dirname, 'config.json');
 
 var githubUser = process.argv[2] || 'YOUR_GITHUB_USERNAME';
