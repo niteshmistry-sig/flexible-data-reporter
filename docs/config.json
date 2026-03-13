@@ -1,0 +1,16 @@
+{
+  "name": "Flexible Data Reporter",
+  "supportEmail": "support@example.com",
+  "version": "1.0",
+  "items": [
+    {
+      "url": "https://niteshmistry-sig.github.io/flexible-data-reporter/index.html",
+      "path": "ActivityLink/",
+      "menuName": {
+        "en": "Data Reporter"
+      },
+      "svgIcon": "https://niteshmistry-sig.github.io/flexible-data-reporter/images/icon.svg"
+    }
+  ],
+  "isSigned": false
+}

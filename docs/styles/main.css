@@ -1,0 +1,553 @@
+/* ===================================================================
+   Flexible Data Reporter — Styles
+   All rules scoped under #fdr-root to avoid MyGeotab conflicts.
+   =================================================================== */
+
+/* -- Root -- */
+#fdr-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #333;
+  background: #fff;
+}
+
+#fdr-root *, #fdr-root *::before, #fdr-root *::after {
+  box-sizing: border-box;
+}
+
+/* -- Content Area -- */
+#fdr-root .fdr-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px;
+}
+
+/* -- Card Panels -- */
+#fdr-root .fdr-panel {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+#fdr-root .fdr-panel-header {
+  background: #f5f6f8;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#fdr-root .fdr-panel-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+#fdr-root .fdr-panel-body {
+  padding: 20px;
+}
+
+/* -- Section Labels -- */
+#fdr-root .fdr-section-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+#fdr-root .fdr-counter-text {
+  float: right;
+  font-size: 12px;
+  font-weight: 400;
+  color: #666;
+}
+
+/* -- Labels -- */
+#fdr-root .fdr-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #666;
+}
+
+/* -- Form Inputs -- */
+#fdr-root .fdr-select,
+#fdr-root .fdr-input {
+  font-family: inherit;
+  font-size: 13px;
+  color: #333;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  min-width: 160px;
+}
+
+#fdr-root .fdr-select:focus,
+#fdr-root .fdr-input:focus {
+  outline: none;
+  border-color: #4a90d9;
+  box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.2);
+}
+
+/* -- Buttons -- */
+#fdr-root .fdr-btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  height: 34px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+#fdr-root .fdr-btn:disabled {
+  background: #999;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+#fdr-root .fdr-btn-primary {
+  background: #4a90d9;
+  color: #fff;
+}
+
+#fdr-root .fdr-btn-primary:hover:not(:disabled) {
+  background: #3a7bc8;
+}
+
+#fdr-root .fdr-btn-secondary {
+  background: #fff;
+  color: #666;
+  border: 1px solid #ccc;
+}
+
+#fdr-root .fdr-btn-secondary:hover:not(:disabled) {
+  background: #f5f6f8;
+  border-color: #999;
+  color: #333;
+}
+
+#fdr-root .fdr-btn-success {
+  background: #2e7d32;
+  color: #fff;
+}
+
+#fdr-root .fdr-btn-success:hover:not(:disabled) {
+  background: #236E32;
+}
+
+/* -- Category Chips -- */
+#fdr-root .fdr-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+#fdr-root .fdr-categories label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #666;
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background: #fff;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+#fdr-root .fdr-categories label:hover {
+  background: #f0f5ff;
+  border-color: #4a90d9;
+  color: #333;
+}
+
+#fdr-root .fdr-categories label:has(input:checked) {
+  background: #4a90d9;
+  border-color: #4a90d9;
+  color: #fff;
+  font-weight: 600;
+}
+
+#fdr-root .fdr-categories label:has(input:checked):hover {
+  background: #3a7bc8;
+  border-color: #3a7bc8;
+}
+
+#fdr-root .fdr-categories input[type="checkbox"] {
+  display: none;
+}
+
+/* -- Column Pickers -- */
+#fdr-root .fdr-column-pickers {
+  margin-bottom: 20px;
+}
+
+#fdr-root .fdr-column-group {
+  margin-bottom: 10px;
+  padding: 14px 16px;
+  background: #f5f6f8;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+#fdr-root .fdr-column-group-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #4a90d9;
+  margin-bottom: 10px;
+}
+
+#fdr-root .fdr-column-group .fdr-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+#fdr-root .fdr-column-group .fdr-columns label {
+  font-size: 13px;
+  color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 3px 0;
+}
+
+#fdr-root .fdr-column-group .fdr-columns input[type="checkbox"] {
+  accent-color: #4a90d9;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+/* -- Diagnostic Picker -- */
+#fdr-root .fdr-diagnostic-picker {
+  display: none;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #f0f5ff;
+  border: 1px solid #4a90d9;
+  border-radius: 6px;
+  border-left: 3px solid #4a90d9;
+}
+
+#fdr-root .fdr-diagnostic-picker.visible {
+  display: block;
+}
+
+#fdr-root .fdr-diagnostic-picker .fdr-select {
+  min-width: 300px;
+  margin-top: 6px;
+}
+
+/* -- Filters -- */
+#fdr-root .fdr-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+#fdr-root .fdr-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* -- Actions -- */
+#fdr-root .fdr-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+/* -- Status / Loading -- */
+#fdr-root .fdr-status {
+  font-size: 13px;
+  color: #666;
+}
+
+#fdr-root .fdr-status.error {
+  color: #c62828;
+  background: #fce4ec;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border-left: 3px solid #c62828;
+}
+
+#fdr-root .fdr-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ddd;
+  border-top-color: #4a90d9;
+  border-radius: 50%;
+  animation: fdr-spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes fdr-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* -- Results Panel -- */
+#fdr-root .fdr-results {
+  display: none;
+}
+
+#fdr-root .fdr-results.visible {
+  display: block;
+}
+
+/* -- Tabs -- */
+#fdr-root .fdr-tabs {
+  display: flex;
+  gap: 0;
+  background: #f5f6f8;
+  border-bottom: 1px solid #ddd;
+  padding: 0 20px;
+  overflow-x: auto;
+}
+
+#fdr-root .fdr-tab {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+#fdr-root .fdr-tab:hover {
+  color: #333;
+  background: #ebedf0;
+}
+
+#fdr-root .fdr-tab.active {
+  color: #4a90d9;
+  border-bottom-color: #4a90d9;
+  background: #fff;
+}
+
+#fdr-root .fdr-tab-count {
+  font-weight: 400;
+  font-size: 11px;
+  color: #999;
+  margin-left: 4px;
+  background: #eee;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+#fdr-root .fdr-tab.active .fdr-tab-count {
+  background: #f0f5ff;
+  color: #4a90d9;
+}
+
+/* -- Table Toolbar -- */
+#fdr-root .fdr-table-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+#fdr-root .fdr-search {
+  width: 240px;
+}
+
+/* -- Data Table -- */
+#fdr-root .fdr-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 12px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+#fdr-root .fdr-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#fdr-root .fdr-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f5f6f8;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #666;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+#fdr-root .fdr-table thead th:hover {
+  background: #ebedf0;
+  color: #333;
+}
+
+#fdr-root .fdr-table thead th .sort-arrow {
+  font-size: 10px;
+  margin-left: 4px;
+  color: #aaa;
+}
+
+#fdr-root .fdr-table thead th .sort-arrow.asc::after {
+  content: '\25B2';
+  color: #4a90d9;
+}
+
+#fdr-root .fdr-table thead th .sort-arrow.desc::after {
+  content: '\25BC';
+  color: #4a90d9;
+}
+
+#fdr-root .fdr-table tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+  font-family: "Roboto Mono", monospace;
+  color: #333;
+  white-space: nowrap;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#fdr-root .fdr-table tbody tr {
+  transition: background 0.1s;
+}
+
+#fdr-root .fdr-table tbody tr:hover {
+  background: #f0f5ff;
+}
+
+#fdr-root .fdr-table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+#fdr-root .fdr-table tbody tr:nth-child(even):hover {
+  background: #f0f5ff;
+}
+
+/* -- Pagination -- */
+#fdr-root .fdr-pagination {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #666;
+  padding: 8px 0;
+}
+
+/* -- No Data -- */
+#fdr-root .fdr-no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 14px;
+}
+
+/* -- Chart Panel -- */
+#fdr-root .fdr-chart-panel {
+  display: none;
+}
+
+#fdr-root .fdr-chart-panel.visible {
+  display: block;
+}
+
+#fdr-root .fdr-chart-controls {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+#fdr-root .fdr-chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  height: 400px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+#fdr-root .fdr-chart-container canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* -- Responsive -- */
+@media (max-width: 800px) {
+  #fdr-root .fdr-content {
+    padding: 8px;
+  }
+  #fdr-root .fdr-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #fdr-root .fdr-select,
+  #fdr-root .fdr-input {
+    min-width: auto;
+    width: 100%;
+  }
+  #fdr-root .fdr-search {
+    width: 100%;
+  }
+  #fdr-root .fdr-diagnostic-picker .fdr-select {
+    min-width: auto;
+    width: 100%;
+  }
+}
